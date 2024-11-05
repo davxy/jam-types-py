@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jam_types"
+version = "0.1.0"
+description = "A Python package for JAM Types"
+readme = "README.md"
+license = {file = "LICENSE"}
+dependencies = [
+    "scalecodec @ git+https://github.com/davxy/scalecodec@extended",
+    "asn1tools @ git+https://github.com/davxy/asn1tools@extended"
+]
