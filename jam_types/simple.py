@@ -1,8 +1,10 @@
 from scalecodec import U8, U16, U32, U64, FixedLengthArray, HexBytes, Struct, Vec, Enum, Null
 from .const import hash_size, validators_count
 
-def n(cls):
+def class_name(cls):
     return cls.__name__
+
+n = class_name
 
 # Out of Spec
  
@@ -37,6 +39,10 @@ class HeaderHash(OpaqueHash):
 
 class Entropy(OpaqueHash):
     pass
+
+class EntropyBuffer(FixedLengthArray):
+    sub_type = n(Entropy)
+    element_count = 4
 
 class ServiceId(U32):
     pass

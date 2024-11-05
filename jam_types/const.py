@@ -14,3 +14,5 @@ validators_super_majority = validators_count // 3 * 2 + 1
 avail_bitfield_bytes = (core_count + 7) // 8
 
 hash_size = 32
+
+max_tickets_per_block = 16

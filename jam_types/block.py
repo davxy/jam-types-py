@@ -1,5 +1,6 @@
-from scalecodec import Vec, Struct, FixedLengthArray
-from .const import epoch_length, validators_count
+from scalecodec import BoundedVec, FixedLengthArray, Struct, Vec
+
+from .const import epoch_length, validators_count, max_tickets_per_block
 
 #
 # Header
@@ -39,8 +40,9 @@ class Header(Struct):
 # Extrinsic
 #
  
-class TicketsXt(Vec):
+class TicketsXt(BoundedVec):
     sub_type = "TicketEnvelope"
+    max_elements = max_tickets_per_block
 
 class DisputesXt(Struct):
     type_mapping = [

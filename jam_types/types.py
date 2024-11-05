@@ -5,6 +5,7 @@ from scalecodec import (
     Null,
     Struct,
     Vec,
+    BoundedVec,
 )
 
 from .const import (
@@ -143,6 +144,10 @@ class TicketEnvelope(Struct):
 
 class TicketsBodies(TicketsMark):
     pass
+
+class TicketsAccumulator(BoundedVec):
+    sub_type = n(TicketBody)
+    max_elements = epoch_length
 
 class EpochKeys(FixedLengthArray):
     sub_type = 'BandersnatchPublic'
