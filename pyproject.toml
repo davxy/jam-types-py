@@ -9,6 +9,7 @@ description = "A Python package for JAM Types"
 readme = "README.md"
 license = {file = "LICENSE"}
 dependencies = [
-    "scalecodec @ git+https://github.com/davxy/scalecodec@extended",
-    "asn1tools @ git+https://github.com/davxy/asn1tools@extended"
+    "scalecodec @ git+https://github.com/davxy/scalecodec@new-compact",
+    # "scalecodec @ git+https://github.com/davxy/scalecodec@extended",
+    # "asn1tools @ git+https://github.com/davxy/asn1tools@extended"
 ]

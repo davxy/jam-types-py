@@ -1,10 +1,6 @@
 from scalecodec import U8, U16, U32, U64, FixedLengthArray, HexBytes, Struct, Vec, Enum, Null
-from .const import hash_size, validators_count
-
-def class_name(cls):
-    return cls.__name__
-
-n = class_name
+from .const import hash_size
+from .utils import class_name as n
 
 # Out of Spec
  
@@ -49,4 +45,3 @@ class ServiceId(U32):
 
 class Gas(U64):
     pass
-

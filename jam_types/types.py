@@ -1,23 +1,23 @@
 from scalecodec import (
     U8,
+    BoundedVec,
     Enum,
     FixedLengthArray,
-    Null,
     Struct,
     Vec,
-    BoundedVec,
 )
 
+from .block import TicketsMark
 from .const import (
     avail_bitfield_bytes,
-    epoch_length,
     core_count,
+    epoch_length,
     validators_count,
     validators_super_majority,
 )
 from .simple import *
-from .simple import n
-from .block import TicketsMark
+from .simple import OpaqueHash, TimeSlot, n
+from .work import WorkReport
 
 #
 # Disputes
@@ -60,9 +60,8 @@ class ValidatorsData(FixedLengthArray):
 
 class AvailabilityAssignment(Struct):
     type_mapping = [
-        # TODO
-        ('dummy_work_report', '[u8; 354]'),
-        ('timeout', 'TimeSlot')
+        ('report', n(WorkReport)),
+        ('timeout', n(TimeSlot))
     ]
 
 class AvailabilityAssignments(FixedLengthArray):
@@ -159,115 +158,6 @@ class TicketsOrKeys(Enum):
         1: ('keys', 'EpochKeys')
     }
 
-###
-# Work Package
-###
- 
-class WorkPackageAvailSpec(Struct):
-    type_mapping = [
-        ("hash", "OpaqueHash"),
-        ("len", "U32"),
-        ("root", "OpaqueHash"),
-        ("segments", "OpaqueHash")
-    ]
-
-class ImportSpec(Struct):
-    type_mapping = (
-        ("tree_root", "OpaqueHash"),
-        ("index", "U16")
-    )
-
-class ExtrinsicSpec(Struct):
-    type_mapping = (
-        ("hash", "OpaqueHash"),
-        ("len", "U32")
-    )
-
-class WorkItem(Struct):
-    type_mapping = [
-        ("service", "ServiceId"),
-        ("code_hash", "OpaqueHash"),
-        ("payload", "ByteSequence"),
-        ("gas_limit", "Gas"),
-        ("import_segments", "Vec<ImportSpec>"),
-        ("extrinsic", "Vec<ExtrinsicSpec>"),
-        ("export_count", "U16")
-    ]
-
-class Authorizer(Struct):
-    type_mapping = [
-        ("code_hash", "OpaqueHash"),
-        ("params", "ByteSequence")
-    ]
-
-class WorkPackage(Struct):
-    type_mapping = [
-        ("authorization", "ByteSequence"),
-        ("auth_code_host", "ServiceId"),
-        ("authorizer", "Authorizer"),
-        ("context", "RefineContext"),
-        ("items", "Vec<WorkItem>")
-    ]
-
-class AuthorizerOutput(ByteSequence):
-    pass
-
-class WorkPackageSpec(Struct):
-    type_mapping = [
-        ('hash', 'OpaqueHash'),
-        ('length', 'u32'),
-        ('erasure_root', 'OpaqueHash'),
-        ('exports_root', 'OpaqueHash')
-    ]
-
-class RefineContext(Struct):
-    type_mapping = [
-        ('anchor', 'HeaderHash'),
-        ('state_root', 'OpaqueHash'),
-        ('beefy_root', 'OpaqueHash'),
-        ('lookup_anchor', 'HeaderHash'),
-        ('lookup_anchor_slot', 'TimeSlot'),
-        ('prerequisite', 'Option<OpaqueHash>')
-    ]
-
-class WorkExecResult(Enum):
-    type_mapping = {
-        0: ("ok", n(ByteSequence)),
-        1: ("out_of_gas", n(Null)),
-        2: ("panic", n(Null)),
-        3: ("bad_code", n(Null)),
-        4: ("code_oversize", n(Null))
-    }
-
-class WorkResult(Struct):
-    type_mapping = [
-        ("service_id", n(ServiceId)),
-        ("code_hash", n(OpaqueHash)),
-        ("payload_hash", n(OpaqueHash)),
-        ("gas", n(Gas)),
-        ("result", n(WorkExecResult))
-    ]
-
-class WorkResults(Vec):
-    sub_type = n(WorkResult)
-
-class SegmentRootLookupItem(Struct):
-    type_mapping = [
-        ("work_package_hash", "OpaqueHash"),
-        ("segment_tree_root", "OpaqueHash")
-    ]
-
-class WorkReport(Struct):
-    type_mapping = [
-        ('package_spec', 'WorkPackageSpec'),
-        ('context', 'RefineContext'),
-        ('core_index', n(CoreIndex)),
-        ('authorizer_hash', n(OpaqueHash)),
-        ('auth_output', n(AuthorizerOutput)),
-        ("segment_root_lookup", 'Vec<SegmentRootLookupItem>'),
-        ('results', n(WorkResults))
-    ]
-
 class GuaranteeSignature(Struct):
     type_mapping = [
         ('validator_index', 'ValidatorIndex'),
@@ -282,4 +172,14 @@ class ReportGuarantee(Struct):
         ('report', 'WorkReport'),
         ('slot', 'TimeSlot'),
         ('signatures', 'GuaranteeSignatures')
+    ]
+
+class Service(Struct):
+    type_mapping = [
+        ('code_hash', 'OpaqueHash'),
+        ('min_item_gas', 'Gas'),
+        ('min_memo_gas', 'Gas'),
+        ('balance', 'U64'),
+        ('code_size', 'U64'),
+        ('items', 'U32')
     ]
