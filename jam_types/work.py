@@ -131,8 +131,8 @@ class SegmentRootLookupItem(Struct):
 
 class WorkReport(Struct):
     type_mapping = [
-        ('package_spec', 'WorkPackageSpec'),
-        ('context', 'RefineContext'),
+        ('package_spec', n(WorkPackageSpec)),
+        ('context', n(RefineContext)),
         ('core_index', n(CoreIndex)),
         ('authorizer_hash', n(OpaqueHash)),
         ('auth_output', n(AuthorizerOutput)),
