@@ -1,17 +1,18 @@
 from .const import core_count
 from .simple import *
 from .simple import (
+    U16,
     U32,
+    ByteSequence,
     CoreIndex,
     Enum,
     FixedLengthArray,
+    Gas,
     Null,
     OpaqueHash,
     ServiceId,
     Struct,
     Vec,
-    Gas,
-    ByteSequence,
 )
 from .utils import class_name as n
 
@@ -87,7 +88,8 @@ class WorkPackageSpec(Struct):
         ('hash', n(WorkPackageHash)),
         ('length', n(U32)),
         ('erasure_root', 'OpaqueHash'),
-        ('exports_root', 'OpaqueHash')
+        ('exports_root', 'OpaqueHash'),
+        ('exports_count', n(U16))
     ]
 
 class RefineContext(Struct):
@@ -97,7 +99,7 @@ class RefineContext(Struct):
         ('beefy_root', 'OpaqueHash'),
         ('lookup_anchor', 'HeaderHash'),
         ('lookup_anchor_slot', 'TimeSlot'),
-        ('prerequisite', 'Option<OpaqueHash>')
+        ('prerequisites', 'Vec<OpaqueHash>')
     ]
 
 class WorkExecResult(Enum):
@@ -129,8 +131,8 @@ class SegmentRootLookupItem(Struct):
 
 class WorkReport(Struct):
     type_mapping = [
-        ('package_spec', 'WorkPackageSpec'),
-        ('context', 'RefineContext'),
+        ('package_spec', n(WorkPackageSpec)),
+        ('context', n(RefineContext)),
         ('core_index', n(CoreIndex)),
         ('authorizer_hash', n(OpaqueHash)),
         ('auth_output', n(AuthorizerOutput)),
