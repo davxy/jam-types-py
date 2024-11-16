@@ -8,8 +8,12 @@ version = "0.1.0"
 description = "A Python package for JAM Types"
 readme = "README.md"
 license = {file = "LICENSE"}
+authors = [
+    {name = "Davide Galassi", email = "davxy@datawok.net"},
+]
+
 dependencies = [
     "scalecodec @ git+https://github.com/davxy/scalecodec@new-compact",
     # "scalecodec @ git+https://github.com/davxy/scalecodec@extended",
-    # "asn1tools @ git+https://github.com/davxy/asn1tools@extended"
+    # "scalecodec @ file:///mnt/ssd/develop/misc/scalecodec"
 ]
