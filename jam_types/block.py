@@ -63,10 +63,10 @@ class GuaranteesXt(Vec):
 class Extrinsic(Struct):
     type_mapping = [
         ("tickets", "TicketsXt"),
-        ("disputes", "DisputesXt"),
         ("preimages", "PreimagesXt"),
+        ("guarantees", "GuaranteesXt"),
         ("assurances", "AssurancesXt"),
-        ("guarantees", "GuaranteesXt")
+        ("disputes", "DisputesXt")
     ]
 
 #
