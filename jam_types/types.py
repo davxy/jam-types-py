@@ -26,13 +26,13 @@ from .work import WorkReport
 class Disputes(Struct):
     type_mapping = [
         # Good verdicts sequence
-        ('psi_g', 'Vec<WorkReportHash>'),
+        ('good', 'Vec<WorkReportHash>'),
         # Bad verdicts sequence
-        ('psi_b', 'Vec<WorkReportHash>'),
+        ('bad', 'Vec<WorkReportHash>'),
         # Wonky verdicts sequence
-        ('psi_w', 'Vec<WorkReportHash>'),
+        ('wonky', 'Vec<WorkReportHash>'),
         # Offenders sequence
-        ('psi_o', 'Vec<WorkReportHash>')
+        ('offenders', 'Vec<WorkReportHash>')
     ]
 
 ##
