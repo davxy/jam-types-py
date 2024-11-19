@@ -174,12 +174,12 @@ class ReportGuarantee(Struct):
         ('signatures', 'GuaranteeSignatures')
     ]
 
-class Service(Struct):
+class ServiceInfo(Struct):
     type_mapping = [
         ('code_hash', 'OpaqueHash'),
+        ('balance', 'U64'),
         ('min_item_gas', 'Gas'),
         ('min_memo_gas', 'Gas'),
-        ('balance', 'U64'),
-        ('code_size', 'U64'),
+        ('bytes', 'U64'),
         ('items', 'U32')
     ]
