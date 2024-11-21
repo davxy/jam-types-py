@@ -13,6 +13,7 @@ class TicketsMark(FixedLengthArray):
 class EpochMark(Struct):
     type_mapping = [
         ('entropy', 'OpaqueHash'),
+        ('tickets_entropy', 'OpaqueHash'),
         ('validators', f'[BandersnatchPublic; {validators_count}]')
     ]
 
