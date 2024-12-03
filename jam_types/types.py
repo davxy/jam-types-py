@@ -1,5 +1,6 @@
 from scalecodec import (
     U8,
+    U32,
     BoundedVec,
     Enum,
     FixedLengthArray,
@@ -67,6 +68,30 @@ class AvailabilityAssignment(Struct):
 class AvailabilityAssignments(FixedLengthArray):
     sub_type = 'Option<AvailabilityAssignment>'
     element_count = core_count
+
+#
+# Statistics
+#
+
+class ActivityRecord(Struct):
+    type_mapping = [
+        ("blocks", n(U32)),
+        ("tickets", n(U32)),
+        ("pre_images", n(U32)),
+        ("pre_images_size", n(U32)),
+        ("guarantees", n(U32)),
+        ("assurances", n(U32)),
+    ]
+
+class ActivityRecords(FixedLengthArray):
+    sub_type = n(ActivityRecord)
+    element_count = validators_count
+
+class Statistics(Struct):
+    type_mapping = [
+        ("current", n(ActivityRecords)),
+        ("last", n(ActivityRecords))
+    ]
 
 #
 # Misc
