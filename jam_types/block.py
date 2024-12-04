@@ -1,13 +1,15 @@
 from scalecodec import BoundedVec, FixedLengthArray, Struct, Vec
 
 from .const import epoch_length, validators_count, max_tickets_per_block
+from .types import Preimage, TicketBody
+from .utils import class_name as n
 
 #
 # Header
 #
 
 class TicketsMark(FixedLengthArray):
-    sub_type = 'TicketBody'
+    sub_type = n(TicketBody)
     element_count = epoch_length
 
 class EpochMark(Struct):
@@ -53,7 +55,7 @@ class DisputesXt(Struct):
     ]
 
 class PreimagesXt(Vec):
-    sub_type = "Preimage"
+    sub_type = n(Preimage)
 
 class AssurancesXt(Vec):
     sub_type = "AvailAssurance"
@@ -72,7 +74,7 @@ class Extrinsic(Struct):
 
 #
 # Block
-# 
+#
 
 class Block(Struct):
     type_mapping = [

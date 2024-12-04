@@ -8,7 +8,6 @@ from scalecodec import (
     Vec,
 )
 
-from .block import TicketsMark
 from .const import (
     avail_bitfield_bytes,
     core_count,
@@ -166,8 +165,9 @@ class TicketEnvelope(Struct):
         ("signature", "BandersnatchRingVrfSignature")
     ]
 
-class TicketsBodies(TicketsMark):
-    pass
+class TicketsBodies(FixedLengthArray):
+    sub_type = n(TicketBody)
+    element_count = epoch_length
 
 class TicketsAccumulator(BoundedVec):
     sub_type = n(TicketBody)
@@ -179,9 +179,13 @@ class EpochKeys(FixedLengthArray):
 
 class TicketsOrKeys(Enum):
     type_mapping = {
-        0: ('tickets', 'TicketsBodies'),
-        1: ('keys', 'EpochKeys')
+        0: ('tickets', n(TicketsBodies)),
+        1: ('keys', n(EpochKeys))
     }
+
+#
+# Guarantees
+#
 
 class GuaranteeSignature(Struct):
     type_mapping = [
