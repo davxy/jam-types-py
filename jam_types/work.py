@@ -51,7 +51,8 @@ class WorkItem(Struct):
         ("service", "ServiceId"),
         ("code_hash", "OpaqueHash"),
         ("payload", "ByteSequence"),
-        ("gas_limit", "Gas"),
+        ("refine_gas_limit", "Gas"),
+        ("accumulate_gas_limit", "Gas"),
         ("import_segments", "Vec<ImportSpec>"),
         ("extrinsic", "Vec<ExtrinsicSpec>"),
         ("export_count", "U16")
