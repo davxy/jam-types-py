@@ -1,4 +1,17 @@
-from scalecodec import U8, U16, U32, U64, FixedLengthArray, HexBytes, Struct, Vec, Enum, Null
+from scalecodec import (
+    U8,
+    U16,
+    U32,
+    U64,
+    BoundedVec,
+    Enum,
+    FixedLengthArray,
+    HexBytes,
+    Null,
+    Struct,
+    Vec,
+)
+
 from .const import hash_size
 from .utils import class_name as n
 

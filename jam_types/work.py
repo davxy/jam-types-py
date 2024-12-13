@@ -1,8 +1,9 @@
-from .const import core_count
+from .const import auth_pool_max_size, auth_queue_max_size, core_count
 from .simple import *
 from .simple import (
     U16,
     U32,
+    BoundedVec,
     ByteSequence,
     CoreIndex,
     Enum,
@@ -58,19 +59,30 @@ class WorkItem(Struct):
         ("export_count", "U16")
     ]
 
-class AuthPool(Vec):
-    # Authorizer hash (blake2b(encode(Authorizer)))
-    sub_type = n(OpaqueHash)
-
-class AuthPools(FixedLengthArray):
-    sub_type = n(AuthPool)
-    element_count = core_count
-
 class Authorizer(Struct):
     type_mapping = [
         ("code_hash", "OpaqueHash"),
         ("params", "ByteSequence")
     ]
+
+class AuthPool(BoundedVec):
+    # Authorizer hash (blake2b(encode(Authorizer)))
+    sub_type = n(OpaqueHash)
+    max_elements = auth_pool_max_size
+
+class AuthPools(FixedLengthArray):
+    sub_type = n(AuthPool)
+    element_count = core_count
+
+class AuthQueue(BoundedVec):
+    # Authorizer hash (blake2b(encode(Authorizer)))
+    sub_type = n(OpaqueHash)
+    max_elements = auth_queue_max_size
+    
+class AuthQueues(FixedLengthArray):
+    sub_type = n(AuthQueue)
+    element_count = core_count
+
 
 class WorkPackage(Struct):
     type_mapping = [
@@ -117,7 +129,7 @@ class WorkResult(Struct):
         ("service_id", n(ServiceId)),
         ("code_hash", n(OpaqueHash)),
         ("payload_hash", n(OpaqueHash)),
-        ("gas", n(Gas)),
+        ("accumulate_gas", n(Gas)),
         ("result", n(WorkExecResult))
     ]
 

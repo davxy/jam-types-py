@@ -15,4 +15,7 @@ core_count = validators_count // validators_per_core
 validators_super_majority = validators_count // 3 * 2 + 1
 avail_bitfield_bytes = (core_count + 7) // 8
 
+auth_pool_max_size = 8
+auth_queue_size = 80
+
 hash_size = 32
