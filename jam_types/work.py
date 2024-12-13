@@ -1,4 +1,4 @@
-from .const import auth_pool_max_size, auth_queue_max_size, core_count
+from .const import auth_pool_max_size, auth_queue_size, core_count
 from .simple import *
 from .simple import (
     U16,
@@ -74,10 +74,10 @@ class AuthPools(FixedLengthArray):
     sub_type = n(AuthPool)
     element_count = core_count
 
-class AuthQueue(BoundedVec):
+class AuthQueue(FixedLengthArray):
     # Authorizer hash (blake2b(encode(Authorizer)))
     sub_type = n(OpaqueHash)
-    max_elements = auth_queue_max_size
+    element_count = auth_queue_size
     
 class AuthQueues(FixedLengthArray):
     sub_type = n(AuthQueue)
