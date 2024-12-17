@@ -155,7 +155,7 @@ class WorkReport(Struct):
 class ReadyRecord(Struct):
     type_mapping = [
         ("report", n(WorkReport)),
-        ("deps", "Vec<WorkPackageHash>")
+        ("dependencies", "Vec<WorkPackageHash>")
     ]
 
 class ReadyQueue(FixedLengthArray):
