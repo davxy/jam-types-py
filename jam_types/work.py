@@ -1,4 +1,4 @@
-from .const import auth_pool_max_size, auth_queue_size, core_count
+from .const import auth_pool_max_size, auth_queue_size, core_count, epoch_length
 from .simple import *
 from .simple import (
     U16,
@@ -83,7 +83,6 @@ class AuthQueues(FixedLengthArray):
     sub_type = n(AuthQueue)
     element_count = core_count
 
-
 class WorkPackage(Struct):
     type_mapping = [
         ("authorization", "ByteSequence"),
@@ -152,3 +151,17 @@ class WorkReport(Struct):
         ("segment_root_lookup", 'Vec<SegmentRootLookupItem>'),
         ('results', n(WorkResults))
     ]
+
+class ReadyRecord(Struct):
+    type_mapping = [
+        ("report", n(WorkReport)),
+        ("deps", "Vec<WorkPackageHash>")
+    ]
+
+class ReadyQueue(FixedLengthArray):
+    sub_type = "Vec<ReadyRecord>"
+    element_count = epoch_length
+
+class AccumulatedQueue(FixedLengthArray):
+    sub_type = "Vec<WorkPackageHash>"
+    element_count = epoch_length
