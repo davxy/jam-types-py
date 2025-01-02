@@ -203,6 +203,10 @@ class ReportGuarantee(Struct):
         ('signatures', 'GuaranteeSignatures')
     ]
 
+#
+# Services
+#
+ 
 class ServiceInfo(Struct):
     type_mapping = [
         ('code_hash', 'OpaqueHash'),
@@ -211,4 +215,18 @@ class ServiceInfo(Struct):
         ('min_memo_gas', 'Gas'),
         ('bytes', 'U64'),
         ('items', 'U32')
+    ]
+
+class AlwaysAccumulateMapItem(Struct):
+    type_mapping = [
+        ('id', n(ServiceId)),
+        ('gas', n(Gas)),
+    ]
+
+class Privileges(Struct):
+    type_mapping = [
+        ('bless', n(ServiceId)),
+        ('assign', n(ServiceId)),
+        ('designate', n(ServiceId)),
+        ('always_acc', "Vec<AlwaysAccumulateMapItem>"),
     ]
