@@ -16,7 +16,7 @@ from .const import (
     validators_super_majority,
 )
 from .simple import *
-from .simple import OpaqueHash, TimeSlot, n
+from .simple import OpaqueHash, TimeSlot, ServiceId, n
 from .work import WorkReport
 
 #
@@ -72,7 +72,7 @@ class AvailabilityAssignments(FixedLengthArray):
 # Statistics
 #
 
-class ActivityRecord(Struct):
+class ValActivityRecord(Struct):
     type_mapping = [
         ("blocks", n(U32)),
         ("tickets", n(U32)),
@@ -82,14 +82,35 @@ class ActivityRecord(Struct):
         ("assurances", n(U32)),
     ]
 
-class ActivityRecords(FixedLengthArray):
-    sub_type = n(ActivityRecord)
+class ValActivityRecords(FixedLengthArray):
+    sub_type = n(ValActivityRecord)
     element_count = validators_count
+
+class CoreActivityRecord(Struct):
+    pass
+    
+class CoresStatistics(FixedLengthArray):
+    sub_type = n(CoreActivityRecord)
+    element_count = core_count
+
+class ServiceActivityRecord(Struct):
+    pass
+
+class ServicesStatisticsMapEntry(Struct):
+    type_maping = [
+        ("service_id", n(ServiceId)),
+        ("record", n(ServiceActivityRecord))
+    ]
+
+class ServicesStatistics(Vec):
+    sub_type = n(ServicesStatisticsMapEntry)
 
 class Statistics(Struct):
     type_mapping = [
-        ("current", n(ActivityRecords)),
-        ("last", n(ActivityRecords))
+        ("vals_current", n(ValActivityRecords)),
+        ("vals_last", n(ValActivityRecords)),
+    	("cores", n(CoresStatistics)),
+    	("services", n(ServicesStatistics)),
     ]
 
 #
