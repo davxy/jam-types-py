@@ -6,6 +6,7 @@ from scalecodec import (
     FixedLengthArray,
     Struct,
     Vec,
+    ByteArray
 )
 
 from .const import (
@@ -87,17 +88,61 @@ class ValActivityRecords(FixedLengthArray):
     element_count = validators_count
 
 class CoreActivityRecord(Struct):
-    pass
+    type_mapping = [
+        # Total gas consumed by core for reported work. Includes all refinement and authorizations.
+    	('gas_used', 'Compact<Gas>'),
+    	# Number of segments imported from DA made by core for reported work.
+    	('imports', 'Compact<U16>'),
+    	# Total number of extrinsics used by core for reported work.
+    	('extrinsic_count', 'Compact<U16>'),
+    	# Total size of extrinsics used by core for reported work.
+    	('extrinsic_size', 'Compact<U32>'),
+    	# Number of segments exported into DA made by core for reported work.
+    	('exports', 'Compact<U16>'),
+    	# The work-bundle size. This is the size of data being placed into Audits DA by the core.
+    	('bundle_size', 'Compact<U32>'),
+    	# Amount of bytes which are placed into either Audits or Segments DA.
+    	# This includes the work-bundle (including all extrinsics and imports) as well as all
+    	# (exported) segments.
+    	('da_load', 'Compact<U32>'),
+    	# Number of validators which formed super-majority for assurance.
+    	('popularity', 'Compact<U16>'),
+	]
     
 class CoresStatistics(FixedLengthArray):
     sub_type = n(CoreActivityRecord)
     element_count = core_count
 
 class ServiceActivityRecord(Struct):
-    pass
+    type_mapping = [
+    	# Number of preimages provided to this service.
+    	('provided_count', 'Compact<u16>'),
+    	# Total size of preimages provided to this service.
+    	('provided_size', 'Compact<u32>'),
+    	# Number of work-items refined by service for reported work.
+    	('refinement_count', 'Compact<u32>'),
+    	# Amount of gas used for refinement by service for reported work.
+    	('refinement_gas_used', 'Compact<Gas>'),
+    	# Number of segments imported from the DL by service for reported work.
+    	('imports', 'Compact<u32>'),
+    	# Total number of extrinsics used by service for reported work.
+    	('extrinsic_count', 'Compact<u32>'),
+    	# Total size of extrinsics used by service for reported work.
+    	('extrinsic_size', 'Compact<u32>'),
+    	# Number of segments exported into the DL by service for reported work.
+    	('exports', 'Compact<u32>'),
+    	# Number of work-items accumulated by service.
+    	('accumulate_count', 'Compact<u32>'),
+    	# Amount of gas used for accumulation by service.
+    	('accumulate_gas_used', 'Compact<Gas>'),
+    	# Number of transfers processed by service.
+    	('on_transfers_count', 'Compact<u32>'),
+    	# Amount of gas used for processing transfers by service.
+    	('on_transfers_gas_used', 'Compact<Gas>'),
+    ]
 
 class ServicesStatisticsMapEntry(Struct):
-    type_maping = [
+    type_mapping = [
         ("service_id", n(ServiceId)),
         ("record", n(ServiceActivityRecord))
     ]
@@ -238,7 +283,7 @@ class ServiceInfo(Struct):
         ('items', 'U32')
     ]
 
-class AlwaysAccumulateMapItem(Struct):
+class AlwaysAccumulateMapEntry(Struct):
     type_mapping = [
         ('id', n(ServiceId)),
         ('gas', n(Gas)),
@@ -249,5 +294,5 @@ class Privileges(Struct):
         ('bless', n(ServiceId)),
         ('assign', n(ServiceId)),
         ('designate', n(ServiceId)),
-        ('always_acc', "Vec<AlwaysAccumulateMapItem>"),
+        ('always_acc', "Vec<AlwaysAccumulateMapEntry>"),
     ]
