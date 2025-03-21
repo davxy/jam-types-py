@@ -1,7 +1,8 @@
 from scalecodec import BoundedVec, FixedLengthArray, Struct, Vec
 
 from .const import epoch_length, validators_count, max_tickets_per_block
-from .types import Preimage, TicketBody
+from .types import Preimage, TicketBody, OpaqueHash
+from .crypto import BandersnatchPublic, Ed25519Public
 from .utils import class_name as n
 
 #
@@ -12,11 +13,21 @@ class TicketsMark(FixedLengthArray):
     sub_type = n(TicketBody)
     element_count = epoch_length
 
+class EpochMarkValidatorKeys(Struct):
+    type_mapping = [
+        ('bandersnatch', n(BandersnatchPublic)),
+        ('ed25519', n(Ed25519Public))
+    ]
+
+class EpochMarkValidatorsKeys(FixedLengthArray):
+    sub_type = n(EpochMarkValidatorKeys)
+    element_count = validators_count
+
 class EpochMark(Struct):
     type_mapping = [
-        ('entropy', 'OpaqueHash'),
-        ('tickets_entropy', 'OpaqueHash'),
-        ('validators', f'[BandersnatchPublic; {validators_count}]')
+        ('entropy', n(OpaqueHash)),
+        ('tickets_entropy', n(OpaqueHash)),
+        ('validators', n(EpochMarkValidatorsKeys))
     ]
 
 class OffendersMark(Struct):
