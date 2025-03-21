@@ -6,7 +6,6 @@ from scalecodec import (
     FixedLengthArray,
     Struct,
     Vec,
-    ByteArray
 )
 
 from .const import (
@@ -17,7 +16,7 @@ from .const import (
     validators_super_majority,
 )
 from .simple import *
-from .simple import OpaqueHash, TimeSlot, ServiceId, n
+from .simple import OpaqueHash, TimeSlot, ServiceId, ByteArray, n
 from .work import WorkReport
 
 #
