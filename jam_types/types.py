@@ -74,12 +74,12 @@ class AvailabilityAssignments(FixedLengthArray):
 
 class ValActivityRecord(Struct):
     type_mapping = [
-        ("blocks", n(U32)),
-        ("tickets", n(U32)),
-        ("pre_images", n(U32)),
-        ("pre_images_size", n(U32)),
-        ("guarantees", n(U32)),
-        ("assurances", n(U32)),
+        ("blocks", 'Compact<U32>'),
+        ("tickets", 'Compact<U32>'),
+        ("pre_images", 'Compact<U32>'),
+        ("pre_images_size", 'Compact<U32>'),
+        ("guarantees", 'Compact<U32>'),
+        ("assurances", 'Compact<U32>'),
     ]
 
 class ValActivityRecords(FixedLengthArray):
@@ -137,7 +137,7 @@ class ServiceActivityRecord(Struct):
     	# Number of transfers processed by service.
     	('on_transfers_count', 'Compact<u32>'),
     	# Amount of gas used for processing transfers by service.
-    	('on_transfers_gas_used', 'Compact<Gas>'),
+    	('on_transfers_gas_used', 'Compact<Gas>')
     ]
 
 class ServicesStatisticsMapEntry(Struct):
@@ -154,7 +154,7 @@ class Statistics(Struct):
         ("vals_current", n(ValActivityRecords)),
         ("vals_last", n(ValActivityRecords)),
     	("cores", n(CoresStatistics)),
-    	("services", n(ServicesStatistics)),
+    	("services", n(ServicesStatistics))
     ]
 
 #
