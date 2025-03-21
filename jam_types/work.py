@@ -3,6 +3,7 @@ from .simple import *
 from .simple import (
     U16,
     U32,
+    U64,
     BoundedVec,
     ByteSequence,
     CoreIndex,
@@ -114,6 +115,15 @@ class RefineContext(Struct):
         ('prerequisites', 'Vec<OpaqueHash>')
     ]
 
+class RefineLoad(Struct):
+    type_mapping = [
+    	('gas_used', 'Compact<U64>'),
+    	('imports', 'Compact<U16>'),
+    	('extrinsic_count', 'Compact<U16>'),
+    	('extrinsic_size', 'Compact<U32>'),
+    	('exports', 'Compact<U16>'),
+    ]
+
 class WorkExecResult(Enum):
     type_mapping = {
         0: ("ok", n(ByteSequence)),
@@ -130,7 +140,8 @@ class WorkResult(Struct):
         ("code_hash", n(OpaqueHash)),
         ("payload_hash", n(OpaqueHash)),
         ("accumulate_gas", n(Gas)),
-        ("result", n(WorkExecResult))
+        ("result", n(WorkExecResult)),
+        ("refine_load", n(RefineLoad))
     ]
 
 class WorkResults(Vec):
@@ -150,7 +161,8 @@ class WorkReport(Struct):
         ('authorizer_hash', n(OpaqueHash)),
         ('auth_output', n(AuthorizerOutput)),
         ("segment_root_lookup", 'Vec<SegmentRootLookupItem>'),
-        ('results', n(WorkResults))
+        ('results', n(WorkResults)),
+        ('auth_gas_used', 'Compact<U64>')
     ]
 
 class ReadyRecord(Struct):
