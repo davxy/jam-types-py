@@ -142,7 +142,7 @@ class ServiceActivityRecord(Struct):
 
 class ServicesStatisticsMapEntry(Struct):
     type_mapping = [
-        ("service_id", n(ServiceId)),
+        ("id", n(ServiceId)),
         ("record", n(ServiceActivityRecord))
     ]
 
