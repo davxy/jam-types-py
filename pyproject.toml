@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jam_types"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Python package for JAM Types"
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -13,6 +13,6 @@ authors = [
 ]
 
 dependencies = [
-    "scalecodec @ git+https://github.com/davxy/scalecodec@extended",
-    # "scalecodec @ file:///mnt/ssd/develop/misc/scalecodec"
+    "scalecodec @ git+https://github.com/davxy/scale-codec-py@extended",
+    # "scalecodec @ file:///mnt/ssd/develop/misc/scale-codec-py"
 ]

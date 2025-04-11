@@ -1,5 +1,3 @@
-import scalecodec as scalecodec
-
 from .simple import *
 from .const import *
 from .crypto import *
@@ -9,4 +7,6 @@ from .work import *
 from .history import *
 from .utils import *
 
-__all__ = ['scalecodec']
+from scalecodec import ScaleBytes
+
+__all__ = ['ScaleBytes']

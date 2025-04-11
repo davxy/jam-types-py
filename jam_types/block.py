@@ -74,13 +74,13 @@ class AssurancesXt(Vec):
 class GuaranteesXt(Vec):
     sub_type = 'ReportGuarantee'
 
-class Extrinsic(Struct):
+class Extrinsics(Struct):
     type_mapping = [
-        ("tickets", "TicketsXt"),
-        ("preimages", "PreimagesXt"),
-        ("guarantees", "GuaranteesXt"),
-        ("assurances", "AssurancesXt"),
-        ("disputes", "DisputesXt")
+        ("tickets", n(TicketsXt)),
+        ("preimages", n(PreimagesXt)),
+        ("guarantees", n(GuaranteesXt)),
+        ("assurances", n(AssurancesXt)),
+        ("disputes", n(DisputesXt))
     ]
 
 #
@@ -89,6 +89,6 @@ class Extrinsic(Struct):
 
 class Block(Struct):
     type_mapping = [
-        ("header", "Header"),
-        ("extrinsic", "Extrinsic")
+        ("header", n(Header)),
+        ("extrinsic", n(Extrinsics))
     ]
