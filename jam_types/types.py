@@ -72,7 +72,7 @@ class AvailabilityAssignments(FixedLengthArray):
 # Statistics
 #
 
-class ValActivityRecord(Struct):
+class ValidatorActivityRecord(Struct):
     type_mapping = [
         ("blocks", n(U32)),
         ("tickets", n(U32)),
@@ -82,8 +82,8 @@ class ValActivityRecord(Struct):
         ("assurances", n(U32)),
     ]
 
-class ValActivityRecords(FixedLengthArray):
-    sub_type = n(ValActivityRecord)
+class ValidatorsStatistics(FixedLengthArray):
+    sub_type = n(ValidatorActivityRecord)
     element_count = validators_count
 
 class CoreActivityRecord(Struct):
@@ -151,8 +151,8 @@ class ServicesStatistics(Vec):
 
 class Statistics(Struct):
     type_mapping = [
-        ("vals_current", n(ValActivityRecords)),
-        ("vals_last", n(ValActivityRecords)),
+        ("vals_curr", n(ValidatorsStatistics)),
+        ("vals_last", n(ValidatorsStatistics)),
     	("cores", n(CoresStatistics)),
     	("services", n(ServicesStatistics))
     ]
