@@ -1,6 +1,6 @@
 # JAM Types
 
-Support Types for JAM Graypaper v0.6.3
+Support Types for JAM Graypaper v0.6.5
 
 ## Install
 
