@@ -157,7 +157,7 @@ class WorkReport(Struct):
     type_mapping = [
         ('package_spec', n(WorkPackageSpec)),
         ('context', n(RefineContext)),
-        ('core_index', n(CoreIndex)),
+        ('core_index', 'Compact<CoreIndex>'),
         ('authorizer_hash', n(OpaqueHash)),
         ('auth_output', n(AuthorizerOutput)),
         ("segment_root_lookup", 'Vec<SegmentRootLookupItem>'),
