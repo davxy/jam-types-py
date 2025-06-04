@@ -10,6 +10,7 @@ from scalecodec import (
     Null,
     Struct,
     Vec,
+    String,
 )
 
 from .const import hash_size
