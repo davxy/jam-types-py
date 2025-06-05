@@ -129,9 +129,10 @@ class WorkExecResult(Enum):
         0: ("ok", n(ByteSequence)),
         1: ("out_of_gas", n(Null)),
         2: ("panic", n(Null)),
-        3: ("bad_exports", (Null)),
-        4: ("bad_code", n(Null)),
-        5: ("code_oversize", n(Null))
+        3: ("bad_exports", n(Null)),
+        4: ("output_oversize", n(Null)),
+        5: ("bad_code", n(Null)),
+        6: ("code_oversize", n(Null))
     }
 
 class WorkResult(Struct):
