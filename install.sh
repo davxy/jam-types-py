@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
+#
+# Dependencies:
+# - python3
+# - python3-pip
+# - python3-venv
 
 set -euo pipefail
 
+PYTHON=python3
+
 # Check if Python is available
-if ! command -v python &> /dev/null; then
+if ! command -v $PYTHON &> /dev/null; then
     echo "Error: Python is not installed or not in PATH" >&2
     exit 1
 fi
@@ -11,6 +18,7 @@ fi
 # Set default virtual environment location
 if [ -z "${PIP_LOCAL_VENV:-}" ]; then
     PIP_LOCAL_VENV="$HOME/.local/pip"
+    echo "Setting default local venv: $PIP_LOCAL_VENV"
 fi
 
 env_dir="$PIP_LOCAL_VENV/jam-types"
@@ -21,9 +29,9 @@ echo "Installing jam-types to $env_dir"
 mkdir -p "$(dirname "$env_dir")"
 
 # Create virtual environment if it doesn't exist
-if [ ! -d "$env_dir" ]; then
+if [ ! -f "$env_dir/bin/activate" ]; then
     echo "Creating virtual environment..."
-    python -m venv "$env_dir"
+    $PYTHON -m venv "$env_dir"
 else
     echo "Virtual environment already exists, using existing one..."
 fi
