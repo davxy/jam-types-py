@@ -14,6 +14,7 @@ from .const import (
     epoch_length,
     validators_count,
     validators_super_majority,
+    create_spec_dependent_metaclass,
 )
 from .simple import *
 from .simple import OpaqueHash, TimeSlot, ServiceId, ByteArray, n
@@ -50,9 +51,10 @@ class ValidatorData(Struct):
         ("metadata", 'ValidatorMetadata')
     ]
 
-class ValidatorsData(FixedLengthArray):
+class ValidatorsData(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
     sub_type = 'ValidatorData'
     element_count = validators_count
+    _spec_attributes = {'element_count': 'validators_count'}
 
 #
 # Availability Assigments
@@ -64,9 +66,10 @@ class AvailabilityAssignment(Struct):
         ('timeout', n(TimeSlot))
     ]
 
-class AvailabilityAssignments(FixedLengthArray):
+class AvailabilityAssignments(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
     sub_type = 'Option<AvailabilityAssignment>'
     element_count = core_count
+    _spec_attributes = {'element_count': 'core_count'}
 
 #
 # Statistics
@@ -82,9 +85,10 @@ class ValidatorActivityRecord(Struct):
         ("assurances", n(U32)),
     ]
 
-class ValidatorsStatistics(FixedLengthArray):
+class ValidatorsStatistics(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
     sub_type = n(ValidatorActivityRecord)
     element_count = validators_count
+    _spec_attributes = {'element_count': 'validators_count'}
 
 class CoreActivityRecord(Struct):
     type_mapping = [
@@ -108,9 +112,10 @@ class CoreActivityRecord(Struct):
     	('gas_used', 'Compact<Gas>'),
 	]
     
-class CoresStatistics(FixedLengthArray):
+class CoresStatistics(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
     sub_type = n(CoreActivityRecord)
     element_count = core_count
+    _spec_attributes = {'element_count': 'core_count'}
 
 class ServiceActivityRecord(Struct):
     type_mapping = [
@@ -161,13 +166,24 @@ class Statistics(Struct):
 # Misc
 # 
 
-class AvailAssurance(Struct):
+class AvailAssurance(Struct, metaclass=create_spec_dependent_metaclass(type(Struct))):
     type_mapping = [
         ("anchor", "OpaqueHash"),
         ("bitfield", f"[U8; {avail_bitfield_bytes}]"),
         ("validator_index", "U16"),
         ("signature", "Ed25519Signature")
     ]
+    _spec_attributes = {}
+    
+    @classmethod
+    def _update_spec_attributes(cls):
+        # Update the type_mapping with the new bitfield size
+        cls.type_mapping = [
+            ("anchor", "OpaqueHash"),
+            ("bitfield", f"[U8; {avail_bitfield_bytes}]"),
+            ("validator_index", "U16"),
+            ("signature", "Ed25519Signature")
+        ]
 
 class Preimage(Struct):
     type_mapping = [
@@ -197,9 +213,10 @@ class Judgement(Struct):
         ("signature", "Ed25519Signature")
     ]
 
-class Judgements(FixedLengthArray):
+class Judgements(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
     sub_type = 'Judgement'
     element_count = validators_super_majority
+    _spec_attributes = {'element_count': 'validators_super_majority'}
     
 class Verdict(Struct):
     type_mapping = [
@@ -230,17 +247,20 @@ class TicketEnvelope(Struct):
         ("signature", "BandersnatchRingVrfSignature")
     ]
 
-class TicketsBodies(FixedLengthArray):
+class TicketsBodies(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
     sub_type = n(TicketBody)
     element_count = epoch_length
+    _spec_attributes = {'element_count': 'epoch_length'}
 
-class TicketsAccumulator(BoundedVec):
+class TicketsAccumulator(BoundedVec, metaclass=create_spec_dependent_metaclass(type(BoundedVec))):
     sub_type = n(TicketBody)
     max_elements = epoch_length
+    _spec_attributes = {'max_elements': 'epoch_length'}
 
-class EpochKeys(FixedLengthArray):
+class EpochKeys(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
     sub_type = 'BandersnatchPublic'
     element_count = epoch_length
+    _spec_attributes = {'element_count': 'epoch_length'}
 
 class TicketsOrKeys(Enum):
     type_mapping = {

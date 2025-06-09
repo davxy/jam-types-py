@@ -1,6 +1,24 @@
 import os
 import logging
 
+# Global registry for spec-dependent classes
+_spec_dependent_classes = []
+
+def create_spec_dependent_metaclass(base_metaclass):
+    """Create a metaclass that combines spec dependency with the base metaclass."""
+    class SpecDependentMeta(base_metaclass):
+        def __new__(mcs, name, bases, namespace, **kwargs):
+            cls = super().__new__(mcs, name, bases, namespace, **kwargs)
+            
+            # Check if this class has spec-dependent attributes
+            spec_attrs = getattr(cls, '_spec_attributes', {})
+            if spec_attrs:
+                _spec_dependent_classes.append((cls, spec_attrs))
+            
+            return cls
+    
+    return SpecDependentMeta
+
 # Spec configurations
 SPECS = {
     'full': {
@@ -25,6 +43,7 @@ def set_spec(spec_name):
         raise ValueError(f"Unknown spec: {spec_name}. Available specs: {list(SPECS.keys())}")
     _current_spec = spec_name
     _update_constants()
+    _update_type_classes()
 
 def get_current_spec():
     """Get the name of the current spec."""
@@ -54,6 +73,16 @@ def _update_constants():
     auth_pool_max_size = 8
     auth_queue_size = 80
     hash_size = 32
+
+def _update_type_classes():
+    """Update all registered spec-dependent classes."""
+    for cls, spec_attrs in _spec_dependent_classes:
+        for attr_name, const_name in spec_attrs.items():
+            setattr(cls, attr_name, globals()[const_name])
+        
+        # Handle classes with custom update methods
+        if hasattr(cls, '_update_spec_attributes'):
+            cls._update_spec_attributes()
 
 # Initialize constants with current spec
 _update_constants()

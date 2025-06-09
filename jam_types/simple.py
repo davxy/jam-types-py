@@ -13,7 +13,7 @@ from scalecodec import (
     String,
 )
 
-from .const import hash_size
+from .const import hash_size 
 from .utils import class_name as n
 
 # Out of Spec
