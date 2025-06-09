@@ -1,4 +1,4 @@
-from .const import auth_pool_max_size, auth_queue_size, core_count, epoch_length, create_spec_dependent_metaclass
+from .const import auth_pool_max_size, auth_queue_size, core_count, epoch_length, spec_metaclass
 from .simple import *
 from .simple import (
     U16,
@@ -66,24 +66,24 @@ class Authorizer(Struct):
         ("params", "ByteSequence")
     ]
 
-class AuthPool(BoundedVec, metaclass=create_spec_dependent_metaclass(type(BoundedVec))):
+class AuthPool(BoundedVec, metaclass=spec_metaclass(type(BoundedVec))):
     # Authorizer hash (blake2b(encode(Authorizer)))
     sub_type = n(OpaqueHash)
     max_elements = auth_pool_max_size
     _spec_attributes = {'max_elements': 'auth_pool_max_size'}
 
-class AuthPools(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
+class AuthPools(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
     sub_type = n(AuthPool)
     element_count = core_count
     _spec_attributes = {'element_count': 'core_count'}
 
-class AuthQueue(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
+class AuthQueue(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
     # Authorizer hash (blake2b(encode(Authorizer)))
     sub_type = n(OpaqueHash)
     element_count = auth_queue_size
     _spec_attributes = {'element_count': 'auth_queue_size'}
     
-class AuthQueues(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
+class AuthQueues(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
     sub_type = n(AuthQueue)
     element_count = core_count
     _spec_attributes = {'element_count': 'core_count'}
@@ -175,12 +175,12 @@ class ReadyRecord(Struct):
         ("dependencies", "Vec<WorkPackageHash>")
     ]
 
-class ReadyQueue(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
+class ReadyQueue(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
     sub_type = "Vec<ReadyRecord>"
     element_count = epoch_length
     _spec_attributes = {'element_count': 'epoch_length'}
 
-class AccumulatedQueue(FixedLengthArray, metaclass=create_spec_dependent_metaclass(type(FixedLengthArray))):
+class AccumulatedQueue(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
     sub_type = "Vec<WorkPackageHash>"
     element_count = epoch_length
     _spec_attributes = {'element_count': 'epoch_length'}

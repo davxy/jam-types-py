@@ -4,7 +4,7 @@ import logging
 # Global registry for spec-dependent classes
 _spec_dependent_classes = []
 
-def create_spec_dependent_metaclass(base_metaclass):
+def spec_metaclass(base_metaclass):
     """Create a metaclass that combines spec dependency with the base metaclass."""
     class SpecDependentMeta(base_metaclass):
         def __new__(mcs, name, bases, namespace, **kwargs):
@@ -78,11 +78,8 @@ def _update_type_classes():
     """Update all registered spec-dependent classes."""
     for cls, spec_attrs in _spec_dependent_classes:
         for attr_name, const_name in spec_attrs.items():
+            logging.debug("Updating {} {} = {}".format(cls, attr_name, globals()[const_name]))
             setattr(cls, attr_name, globals()[const_name])
-        
-        # Handle classes with custom update methods
-        if hasattr(cls, '_update_spec_attributes'):
-            cls._update_spec_attributes()
 
 # Initialize constants with current spec
 _update_constants()
