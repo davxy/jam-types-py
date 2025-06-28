@@ -1,4 +1,4 @@
-from .const import auth_pool_max_size, auth_queue_size, core_count, epoch_length, spec_metaclass
+from .spec import auth_pool_max_size, auth_queue_size, core_count, epoch_length, spec_metaclass
 from .simple import *
 from .simple import (
     U16,

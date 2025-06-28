@@ -1,6 +1,6 @@
 from scalecodec import BoundedVec, FixedLengthArray, Struct, Vec
 
-from .const import epoch_length, validators_count, max_tickets_per_block, spec_metaclass
+from .spec import epoch_length, validators_count, max_tickets_per_block, spec_metaclass
 from .types import Preimage, TicketBody, OpaqueHash, AvailAssurance
 from .crypto import BandersnatchPublic, Ed25519Public
 from .utils import class_name as n

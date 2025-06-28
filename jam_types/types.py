@@ -8,7 +8,7 @@ from scalecodec import (
     Vec,
 )
 
-from .const import (
+from .spec import (
     avail_bitfield_bytes,
     core_count,
     epoch_length,
