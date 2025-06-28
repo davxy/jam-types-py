@@ -1,5 +1,5 @@
 from .simple import *
-from .const import *
+from .spec import *
 from .crypto import *
 from .types import *
 from .block import *
