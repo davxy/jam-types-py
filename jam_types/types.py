@@ -17,7 +17,7 @@ from .spec import (
     spec_metaclass,
 )
 from .simple import *
-from .simple import OpaqueHash, TimeSlot, ServiceId, ByteArray, n
+from .simple import OpaqueHash, TimeSlot, ServiceId, ByteArray, Gas, n
 from .work import WorkReport
 
 #
@@ -293,7 +293,11 @@ class ServiceInfo(Struct):
         ('min_item_gas', 'Gas'),
         ('min_memo_gas', 'Gas'),
         ('bytes', 'U64'),
-        ('items', 'U32')
+        ('deposit-offset', 'U64'),
+        ('items', n(U32)),
+        ('creation-slot', n(TimeSlot)),
+        ('last-accumulation-slot', n(TimeSlot)),
+        ('parent-service', n(ServiceId))
     ]
 
 class AlwaysAccumulateMapEntry(Struct):
