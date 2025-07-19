@@ -13,6 +13,6 @@ authors = [
 ]
 
 dependencies = [
-    "scalecodec @ git+https://github.com/davxy/scale-codec-py@extended",
+    "scalecodec @ git+https://github.com/davxy/jam-codec-py",
     # "scalecodec @ file:///mnt/ssd/develop/misc/scale-codec-py"
 ]
