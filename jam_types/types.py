@@ -306,10 +306,15 @@ class AlwaysAccumulateMapEntry(Struct):
         ('gas', n(Gas)),
     ]
 
+class CoreAssignmentPrivileges(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+    sub_type = n(ServiceId)
+    element_count = core_count
+    _spec_attributes = {'element_count': 'core_count'}
+
 class Privileges(Struct):
     type_mapping = [
         ('bless', n(ServiceId)),
-        ('assign', n(ServiceId)),
+        ('assign', n(CoreAssignmentPrivileges)),
         ('designate', n(ServiceId)),
         ('always_acc', "Vec<AlwaysAccumulateMapEntry>"),
     ]
