@@ -54,6 +54,7 @@ def _update_globals():
     global validators_count, epoch_length, max_tickets_per_block
     global validators_per_core, core_count, validators_super_majority, avail_bitfield_bytes
     global auth_pool_max_size, auth_queue_size, hash_size
+    global recent_blocks_max_size
     
     logging.debug("Using JAM spec: %s", _current_spec)
     spec = SPECS[_current_spec]
@@ -73,6 +74,7 @@ def _update_globals():
     auth_pool_max_size = 8
     auth_queue_size = 80
     hash_size = 32
+    recent_blocks_max_size = 8
 
 def _update_type_classes():
     """Update all registered spec-dependent classes."""
