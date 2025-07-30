@@ -1,4 +1,5 @@
-from .simple import Struct, OpaqueHash
+from .simple import Struct, OpaqueHash, BoundedVec, n
+from .spec import recent_blocks_max_size
 
 class Mmr(Struct):
     type_mapping = [
@@ -14,8 +15,18 @@ class ReportedWorkPackage(Struct):
 
 class BlockInfo(Struct):
     type_mapping = [
-        ('header_hash', 'OpaqueHash'),
-        ('mmr', 'Mmr'),
-        ('state_root', 'OpaqueHash'),
+        ('header_hash', n(OpaqueHash)),
+        ('beefy_root', n(OpaqueHash)),
+        ('state_root', n(OpaqueHash)),
         ('reported', 'Vec<ReportedWorkPackage>')
+    ]
+
+class RecentBlocksInfo(BoundedVec):
+    sub_type = n(BlockInfo)
+    max_elements = recent_blocks_max_size
+
+class RecentBlocks(Struct):
+    type_mapping = [
+        ('history', n(RecentBlocksInfo)),
+        ('mmr', n(Mmr))
     ]

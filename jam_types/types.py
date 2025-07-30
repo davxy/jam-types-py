@@ -17,7 +17,7 @@ from .spec import (
     spec_metaclass,
 )
 from .simple import *
-from .simple import OpaqueHash, TimeSlot, ServiceId, ByteArray, n
+from .simple import OpaqueHash, TimeSlot, ServiceId, ByteArray, Gas, n
 from .work import WorkReport
 
 #
@@ -293,7 +293,11 @@ class ServiceInfo(Struct):
         ('min_item_gas', 'Gas'),
         ('min_memo_gas', 'Gas'),
         ('bytes', 'U64'),
-        ('items', 'U32')
+        ('deposit-offset', 'U64'),
+        ('items', n(U32)),
+        ('creation-slot', n(TimeSlot)),
+        ('last-accumulation-slot', n(TimeSlot)),
+        ('parent-service', n(ServiceId))
     ]
 
 class AlwaysAccumulateMapEntry(Struct):
@@ -302,10 +306,15 @@ class AlwaysAccumulateMapEntry(Struct):
         ('gas', n(Gas)),
     ]
 
+class CoreAssignmentPrivileges(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+    sub_type = n(ServiceId)
+    element_count = core_count
+    _spec_attributes = {'element_count': 'core_count'}
+
 class Privileges(Struct):
     type_mapping = [
         ('bless', n(ServiceId)),
-        ('assign', n(ServiceId)),
+        ('assign', n(CoreAssignmentPrivileges)),
         ('designate', n(ServiceId)),
         ('always_acc', "Vec<AlwaysAccumulateMapEntry>"),
     ]
