@@ -293,11 +293,11 @@ class ServiceInfo(Struct):
         ('min_item_gas', 'Gas'),
         ('min_memo_gas', 'Gas'),
         ('bytes', 'U64'),
-        ('deposit-offset', 'U64'),
+        ('deposit_offset', 'U64'),
         ('items', n(U32)),
-        ('creation-slot', n(TimeSlot)),
-        ('last-accumulation-slot', n(TimeSlot)),
-        ('parent-service', n(ServiceId))
+        ('creation_slot', n(TimeSlot)),
+        ('last_accumulation_slot', n(TimeSlot)),
+        ('parent_service', n(ServiceId))
     ]
 
 class AlwaysAccumulateMapEntry(Struct):
