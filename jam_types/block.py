@@ -46,9 +46,9 @@ class Header(Struct):
         ("slot", "TimeSlot"),
         ("epoch_mark", "Option<EpochMark>"),
         ("tickets_mark", "Option<TicketsMark>"),
-        ("offenders_mark", "Vec<Ed25519Public>"),
         ("author_index", "U16"),
         ("entropy_source", "BandersnatchVrfSignature"),
+        ("offenders_mark", "Vec<Ed25519Public>"),
         ("seal", "BandersnatchVrfSignature")
     ]
 
