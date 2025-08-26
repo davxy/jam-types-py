@@ -100,12 +100,12 @@ class CoreActivityRecord(Struct):
     	('popularity', 'Compact<U16>'),
     	# Number of segments imported from DA made by core for reported work.
     	('imports', 'Compact<U16>'),
-    	# Number of segments exported into DA made by core for reported work.
-    	('exports', 'Compact<U16>'),
-    	# Total size of extrinsics used by core for reported work.
-    	('extrinsic_size', 'Compact<U32>'),
     	# Total number of extrinsics used by core for reported work.
     	('extrinsic_count', 'Compact<U16>'),
+    	# Total size of extrinsics used by core for reported work.
+    	('extrinsic_size', 'Compact<U32>'),
+    	# Number of segments exported into DA made by core for reported work.
+    	('exports', 'Compact<U16>'),
     	# The work-bundle size. This is the size of data being placed into Audits DA by the core.
     	('bundle_size', 'Compact<U32>'),
         # Total gas consumed by core for reported work. Includes all refinement and authorizations.
@@ -129,12 +129,12 @@ class ServiceActivityRecord(Struct):
     	('refinement_gas_used', 'Compact<Gas>'),
     	# Number of segments imported from the DL by service for reported work.
     	('imports', 'Compact<u32>'),
-    	# Number of segments exported into the DL by service for reported work.
-    	('exports', 'Compact<u32>'),
-    	# Total size of extrinsics used by service for reported work.
-    	('extrinsic_size', 'Compact<u32>'),
     	# Total number of extrinsics used by service for reported work.
     	('extrinsic_count', 'Compact<u32>'),
+    	# Total size of extrinsics used by service for reported work.
+    	('extrinsic_size', 'Compact<u32>'),
+    	# Number of segments exported into the DL by service for reported work.
+    	('exports', 'Compact<u32>'),
     	# Number of work-items accumulated by service.
     	('accumulate_count', 'Compact<u32>'),
     	# Amount of gas used for accumulation by service.
