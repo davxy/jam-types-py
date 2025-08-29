@@ -16,3 +16,8 @@ dependencies = [
     "scalecodec @ git+https://github.com/davxy/jam-codec-py",
     # "scalecodec @ file:///mnt/ssd/develop/misc/scale-codec-py"
 ]
+
+[project.scripts]
+jam-types-info = "jam_types.scripts.jam_types_info:main"
+jam-spec = "jam_types.scripts.jam_spec:main"
+jam-decode = "jam_types.scripts.jam_decode:main"
