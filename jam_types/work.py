@@ -3,10 +3,8 @@ from .simple import *
 from .simple import (
     U16,
     U32,
-    U64,
     BoundedVec,
     ByteSequence,
-    CoreIndex,
     Enum,
     FixedLengthArray,
     Gas,
@@ -52,12 +50,12 @@ class WorkItem(Struct):
     type_mapping = [
         ("service", "ServiceId"),
         ("code_hash", "OpaqueHash"),
-        ("payload", "ByteSequence"),
         ("refine_gas_limit", "Gas"),
         ("accumulate_gas_limit", "Gas"),
+        ("export_count", "U16"),
+        ("payload", "ByteSequence"),
         ("import_segments", "Vec<ImportSpec>"),
-        ("extrinsic", "Vec<ExtrinsicSpec>"),
-        ("export_count", "U16")
+        ("extrinsic", "Vec<ExtrinsicSpec>")
     ]
 
 class Authorizer(Struct):
@@ -88,12 +86,23 @@ class AuthQueues(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArra
     element_count = core_count
     _spec_attributes = {'element_count': 'core_count'}
 
+class RefineContext(Struct):
+    type_mapping = [
+        ('anchor', 'HeaderHash'),
+        ('state_root', 'OpaqueHash'),
+        ('beefy_root', 'OpaqueHash'),
+        ('lookup_anchor', 'HeaderHash'),
+        ('lookup_anchor_slot', 'TimeSlot'),
+        ('prerequisites', 'Vec<OpaqueHash>')
+    ]
+
 class WorkPackage(Struct):
     type_mapping = [
-        ("authorization", "ByteSequence"),
-        ("auth_code_host", "ServiceId"),
-        ("authorizer", "Authorizer"),
-        ("context", "RefineContext"),
+        ("auth_code_host", n(ServiceId)),
+        ("auth_code_hash", n(OpaqueHash)),
+        ("context", n(RefineContext)),
+        ("authorization", n(ByteSequence)),
+        ("authorizer_config", n(ByteSequence)),
         ("items", "Vec<WorkItem>")
     ]
 
@@ -107,16 +116,6 @@ class WorkPackageSpec(Struct):
         ('erasure_root', 'OpaqueHash'),
         ('exports_root', 'OpaqueHash'),
         ('exports_count', n(U16))
-    ]
-
-class RefineContext(Struct):
-    type_mapping = [
-        ('anchor', 'HeaderHash'),
-        ('state_root', 'OpaqueHash'),
-        ('beefy_root', 'OpaqueHash'),
-        ('lookup_anchor', 'HeaderHash'),
-        ('lookup_anchor_slot', 'TimeSlot'),
-        ('prerequisites', 'Vec<OpaqueHash>')
     ]
 
 class RefineLoad(Struct):
@@ -164,10 +163,10 @@ class WorkReport(Struct):
         ('context', n(RefineContext)),
         ('core_index', 'Compact<CoreIndex>'),
         ('authorizer_hash', n(OpaqueHash)),
+        ('auth_gas_used', 'Compact<U64>'),
         ('auth_output', n(AuthorizerOutput)),
         ("segment_root_lookup", 'Vec<SegmentRootLookupItem>'),
-        ('results', n(WorkResults)),
-        ('auth_gas_used', 'Compact<U64>')
+        ('results', n(WorkResults))
     ]
 
 class ReadyRecord(Struct):
