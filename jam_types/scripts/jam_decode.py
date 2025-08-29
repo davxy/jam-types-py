@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from jam_types.fuzzer import Genesis, TraceStep, FuzzerMessage, FuzzerWireMessage, ScaleBytes, FuzzerReport
-from jam_types import spec
+from jam_types.fuzzer import Genesis, TraceStep, FuzzerMessage, FuzzerWireMessage, FuzzerReport
+from jam_types import spec, ScaleBytes
 import json
 import argparse
 import os
@@ -22,9 +22,9 @@ def main():
 
     type_mapping = {
         'genesis': Genesis,
-        'traceStep': TraceStep,
+        'trace_step': TraceStep,
         'message': FuzzerMessage,
-        'wireMessage': FuzzerWireMessage,
+        'wire_message': FuzzerWireMessage,
         'report': FuzzerReport,
     }
     
@@ -43,17 +43,14 @@ def main():
     args = parser.parse_args()
     
     if not args.type:
-        # Infer type from filename
         filename = os.path.basename(args.filename)
-        if filename == 'report.bin':
-            inferred_type = 'Report'
-        elif filename == 'genesis.bin':
-            inferred_type = 'Genesis'
-        elif re.match(r'^\d{8}\.bin$', filename):
-            inferred_type = 'TraceStep'
-        else:
-            inferred_type = 'Message'
-        print(f"Warning: No type specified, attempting to decode as {inferred_type} based on filename", file=sys.stderr)
+        inferred_type = os.path.splitext(filename)[0]
+        if re.match(r'^\d{8}$', inferred_type):
+            inferred_type = 'trace_step'
+        print(f"No type specified, attempting to decode as '{inferred_type}' based on filename", file=sys.stderr)
+        if inferred_type not in type_mapping:
+            print(f"Error: Cannot infer type from filename '{filename}'. Please specify a type.", file=sys.stderr)
+            sys.exit(1)
         args.type = inferred_type
 
     decode_type = type_mapping[args.type]   
