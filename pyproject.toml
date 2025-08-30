@@ -18,6 +18,6 @@ dependencies = [
 ]
 
 [project.scripts]
-jam-types-info = "jam_types.scripts.jam_types_info:main"
-jam-spec = "jam_types.scripts.jam_spec:main"
 jam-decode = "jam_types.scripts.jam_decode:main"
+jam-diff = "jam_types.scripts.jam_diff:main"
+jam-types-info = "jam_types.scripts.jam_types_info:main"
