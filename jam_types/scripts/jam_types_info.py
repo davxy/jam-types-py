@@ -41,14 +41,66 @@ def get_all_types():
     
     return all_types
 
+def find_type_class(type_name):
+    """Find a type class by name across all jam_types modules."""
+    modules = [
+        jam_types.block,
+        jam_types.crypto,
+        jam_types.fuzzer,
+        jam_types.history,
+        jam_types.simple,
+        jam_types.types,
+        jam_types.work
+    ]
+    
+    for module in modules:
+        for name, obj in inspect.getmembers(module):
+            if inspect.isclass(obj) and obj.__module__ == module.__name__ and name == type_name:
+                return obj
+    
+    return None
+
+def print_type_structure(type_class):
+    """Print the structure of a type class."""
+    print(f"Type: {type_class.__name__}")
+    print(f"Module: {type_class.__module__}")
+    print(f"Base classes: {[base.__name__ for base in type_class.__bases__]}")
+    
+    # Print docstring if available
+    if type_class.__doc__:
+        print(f"Documentation: {type_class.__doc__.strip()}")
+    
+    # Print class attributes/fields if available
+    if hasattr(type_class, '_fields'):
+        print("Fields:")
+        for field_name, field_type in type_class._fields.items():
+            print(f"  {field_name}: {field_type}")
+    elif hasattr(type_class, '__annotations__'):
+        print("Annotations:")
+        for field_name, field_type in type_class.__annotations__.items():
+            print(f"  {field_name}: {field_type}")
+    
+    # Print spec-dependent attributes if available
+    if hasattr(type_class, '_spec_attributes'):
+        print("Spec-dependent attributes:")
+        for attr_name, attr_value in type_class._spec_attributes.items():
+            print(f"  {attr_name}: {attr_value}")
+
 def main():
     """Display information about jam_types."""
     parser = argparse.ArgumentParser(description="Display jam_types information")
     parser.add_argument("--spec", help="Show information for specific spec")
     parser.add_argument("--types", action="store_true", help="Show all defined types")
+    parser.add_argument("--type", help="Show structure of a specific type")
     args = parser.parse_args()
     
-    if args.types:
+    if args.type:
+        type_class = find_type_class(args.type)
+        if type_class is None:
+            print(f"Error: Type '{args.type}' not found")
+            sys.exit(1)
+        print_type_structure(type_class)
+    elif args.types:
         all_types = get_all_types()
         print("All types defined in jam_types modules:")
         for module_name, types_list in all_types.items():
@@ -68,6 +120,7 @@ def main():
         print(f"Current spec: {current_spec}")
         print(f"Available specs: {list(SPECS.keys())}")
         print("\nUse --types to see all defined types")
+        print("Use --type <TypeName> to see structure of a specific type")
 
 
 if __name__ == "__main__":

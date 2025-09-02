@@ -318,3 +318,12 @@ class Privileges(Struct):
         ('designate', n(ServiceId)),
         ('always_acc', "Vec<AlwaysAccumulateMapEntry>"),
     ]
+
+class AccumulationOutputItem(Struct):
+    type_mapping = [
+        ('service_id', n(ServiceId)),
+        ('output_hash', n(OpaqueHash))
+    ]
+
+class AccumulationOutput(Vec):
+    sub_type = n(AccumulationOutputItem)
