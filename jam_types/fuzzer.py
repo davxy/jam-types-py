@@ -1,4 +1,8 @@
-from jam_types import Struct, Header, Block, OpaqueHash, ByteArray, ByteSequence, Vec, String, Enum, Null, Bool, U8, U32, U64, F64
+#==========================================
+#============ Fuzzer Protocol =============
+#==========================================
+
+from jam_types import TimeSlot, Struct, Header, Block, OpaqueHash, ByteArray, ByteSequence, Vec, String, Enum, Null, Bool, U8, U32, U64, F64
 from jam_types import n
 
 class TrieKey(ByteArray):
@@ -48,20 +52,22 @@ class PeerVersion(Struct):
 
 class PeerInfo(Struct):
     type_mapping = [
-        ('name', n(String)),
-        ('app_version', n(PeerVersion)),
+        ('fuzz_version', n(U8)),
+        ('fuzz_features', n(U32)),
         ('jam_version', n(PeerVersion)),
+        ('app_version', n(PeerVersion)),
+        ('app_name', n(String)),
     ]
 
 class Profile(Enum):
     type_mapping = {
-        0: ("Empty", n(Null)),
-        1: ("Storage", n(Null)),
-        2: ("Preimages", n(Null)),
-        3: ("ValidatorsManagement", n(Null)),
-        4: ("ServiceLife", n(Null)),
-        5: ("ServiceLife", n(Null)),
-        255: ("Full", n(Null)),
+        0: ("empty", n(Null)),
+        1: ("storage", n(Null)),
+        2: ("preimages", n(Null)),
+        3: ("validators_management", n(Null)),
+        4: ("service_life", n(Null)),
+        5: ("service_life", n(Null)),
+        255: ("full", n(Null)),
     }
 
 class ReportConfig(Struct):
@@ -102,7 +108,13 @@ class StateDiff(Struct):
         ('roots', n(RootDiff)),
         ('keyvals', n(KeyValueDiffs)),
     ]
-    
+
+class ImportDiff(Struct):
+    type_mapping = [
+        ('exp', n(String)),
+        ('got', n(String)),
+    ]
+
 class ReportStatistics(Struct):
     type_mapping = [
 	    ('steps', n(U64)),
@@ -129,27 +141,35 @@ class FuzzerReport(Struct):
         ('config', n(ReportConfig)),
         ('stats', n(ReportStatistics)),
         ('target', "Option<TargetReport>"),
-        ('diff', "Option<StateDiff>"),
+        ('state_diff', "Option<StateDiff>"),
+        ('import_diff', "Option<ImportDiff>")
     ]
 
-#==========================================
-#============ Fuzzer Protocol =============
-#==========================================
+class AncestryItem(Struct):
+    type_mapping = [
+        ('slot', n(TimeSlot)),
+        ('header_hash', n(OpaqueHash))
+    ]
+    
+class Ancestry(Vec):
+    sub_type = n(AncestryItem)  
 
-class SetState(Struct):
+class Initialize(Struct):
     type_mapping = [
         ('header', n(Header)),
-        ('state', n(KeyValues))
+        ('state', n(KeyValues)),
+        ('ancestry', n(Ancestry))
     ]
 
 class FuzzerMessage(Enum):
     type_mapping = {
-        0: ("PeerInfo", n(PeerInfo)),
-        1: ("Block", n(Block)),
-        2: ("SetState", n(SetState)),
-        3: ("GetState", n(OpaqueHash)),
-        4: ("State", n(KeyValues)),
-        5: ("StateRoot", n(OpaqueHash))
+        0: ("peer_info", n(PeerInfo)),
+        1: ("initialize", n(Initialize)),
+        2: ("state_root", n(OpaqueHash)),
+        3: ("import_block", n(Block)),
+        4: ("get_state", n(OpaqueHash)),
+        5: ("state", n(KeyValues)),
+        255: ("error", n(String))
     }   
 
 class FuzzerWireMessage(Struct):
