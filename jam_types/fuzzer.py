@@ -154,9 +154,6 @@ class Initialize(Struct):
         ('ancestry', n(Ancestry))
     ]
 
-class Error(None):
-    pass
-
 class FuzzerMessage(Enum):
     type_mapping = {
         0: ("PeerInfo", n(PeerInfo)),
@@ -165,7 +162,7 @@ class FuzzerMessage(Enum):
         3: ("ImportBlock", n(Block)),
         4: ("GetState", n(OpaqueHash)),
         5: ("State", n(KeyValues)),
-        255: ("Error", n(Error))
+        255: ("Error", n(Null))
     }   
 
 class FuzzerWireMessage(Struct):
