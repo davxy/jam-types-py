@@ -108,7 +108,13 @@ class StateDiff(Struct):
         ('roots', n(RootDiff)),
         ('keyvals', n(KeyValueDiffs)),
     ]
-    
+
+class ImportDiff(Struct):
+    type_mapping = [
+        ('exp', n(String)),
+        ('got', n(String)),
+    ]
+
 class ReportStatistics(Struct):
     type_mapping = [
 	    ('steps', n(U64)),
@@ -135,7 +141,8 @@ class FuzzerReport(Struct):
         ('config', n(ReportConfig)),
         ('stats', n(ReportStatistics)),
         ('target', "Option<TargetReport>"),
-        ('diff', "Option<StateDiff>"),
+        ('state_diff', "Option<StateDiff>"),
+        ('import_diff', "Option<ImportDiff>")
     ]
 
 class AncestryItem(Struct):
@@ -162,7 +169,7 @@ class FuzzerMessage(Enum):
         3: ("ImportBlock", n(Block)),
         4: ("GetState", n(OpaqueHash)),
         5: ("State", n(KeyValues)),
-        255: ("Error", n(Null))
+        255: ("Error", n(String))
     }   
 
 class FuzzerWireMessage(Struct):
