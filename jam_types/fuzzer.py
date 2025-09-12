@@ -61,13 +61,13 @@ class PeerInfo(Struct):
 
 class Profile(Enum):
     type_mapping = {
-        0: ("Empty", n(Null)),
-        1: ("Storage", n(Null)),
-        2: ("Preimages", n(Null)),
-        3: ("ValidatorsManagement", n(Null)),
-        4: ("ServiceLife", n(Null)),
-        5: ("ServiceLife", n(Null)),
-        255: ("Full", n(Null)),
+        0: ("empty", n(Null)),
+        1: ("storage", n(Null)),
+        2: ("preimages", n(Null)),
+        3: ("validators_management", n(Null)),
+        4: ("service_life", n(Null)),
+        5: ("service_life", n(Null)),
+        255: ("full", n(Null)),
     }
 
 class ReportConfig(Struct):
@@ -161,15 +161,20 @@ class Initialize(Struct):
         ('ancestry', n(Ancestry))
     ]
 
+class Error(Struct):
+    type_mapping = [
+        ('msg', n(String))
+    ]
+
 class FuzzerMessage(Enum):
     type_mapping = {
-        0: ("PeerInfo", n(PeerInfo)),
-        1: ("Initialize", n(Initialize)),
-        2: ("StateRoot", n(OpaqueHash)),
-        3: ("ImportBlock", n(Block)),
-        4: ("GetState", n(OpaqueHash)),
-        5: ("State", n(KeyValues)),
-        255: ("Error", n(String))
+        0: ("peer_info", n(PeerInfo)),
+        1: ("initialize", n(Initialize)),
+        2: ("state_root", n(OpaqueHash)),
+        3: ("import_block", n(Block)),
+        4: ("get_state", n(OpaqueHash)),
+        5: ("state", n(KeyValues)),
+        255: ("error", n(Error))
     }   
 
 class FuzzerWireMessage(Struct):
