@@ -1,4 +1,8 @@
-from jam_types import Struct, Header, Block, OpaqueHash, ByteArray, ByteSequence, Vec, String, Enum, Null, Bool, U8, U32, U64, F64
+#==========================================
+#============ Fuzzer Protocol =============
+#==========================================
+
+from jam_types import TimeSlot, Struct, Header, Block, OpaqueHash, ByteArray, ByteSequence, Vec, String, Enum, Null, Bool, U8, U32, U64, F64
 from jam_types import n
 
 class TrieKey(ByteArray):
@@ -48,9 +52,11 @@ class PeerVersion(Struct):
 
 class PeerInfo(Struct):
     type_mapping = [
-        ('name', n(String)),
-        ('app_version', n(PeerVersion)),
+        ('fuzz_version', n(U8)),
+        ('fuzz_features', n(U32)),
         ('jam_version', n(PeerVersion)),
+        ('app_version', n(PeerVersion)),
+        ('app_name', n(String)),
     ]
 
 class Profile(Enum):
@@ -132,24 +138,34 @@ class FuzzerReport(Struct):
         ('diff', "Option<StateDiff>"),
     ]
 
-#==========================================
-#============ Fuzzer Protocol =============
-#==========================================
+class AncestryItem(Struct):
+    type_mapping = [
+        ('slot', n(TimeSlot)),
+        ('header_hash', n(OpaqueHash))
+    ]
+    
+class Ancestry(Vec):
+    sub_type = n(AncestryItem)  
 
-class SetState(Struct):
+class Initialize(Struct):
     type_mapping = [
         ('header', n(Header)),
-        ('state', n(KeyValues))
+        ('state', n(KeyValues)),
+        ('ancestry', n(Ancestry))
     ]
+
+class Error(None):
+    pass
 
 class FuzzerMessage(Enum):
     type_mapping = {
         0: ("PeerInfo", n(PeerInfo)),
-        1: ("Block", n(Block)),
-        2: ("SetState", n(SetState)),
-        3: ("GetState", n(OpaqueHash)),
-        4: ("State", n(KeyValues)),
-        5: ("StateRoot", n(OpaqueHash))
+        1: ("Initialize", n(Initialize)),
+        2: ("StateRoot", n(OpaqueHash)),
+        3: ("ImportBlock", n(Block)),
+        4: ("GetState", n(OpaqueHash)),
+        5: ("State", n(KeyValues)),
+        255: ("Error", n(Error))
     }   
 
 class FuzzerWireMessage(Struct):
