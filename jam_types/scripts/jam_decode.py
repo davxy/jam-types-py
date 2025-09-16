@@ -81,8 +81,6 @@ def find_type_in_modules(type_name):
 
 
 def main():
-    spec.set_spec("tiny")
-
     type_mapping = {
         'genesis': Genesis,
         'trace_step': TraceStep,
@@ -99,6 +97,9 @@ def main():
                        help='Hex data to decode directly (alternative to filename)')
     parser.add_argument('-f', '--file', dest='filename', type=str,
                        help='Binary file to decode')
+    parser.add_argument('--spec', type=str, default='tiny', choices=['tiny', 'full'],
+                       help='Specification to use (default: tiny)')
+
     type_help = "Type to use for decoding:\n"
     type_help += " * Report: fuzzer report (generally `report.bin`)\n"
     type_help += " * Genesis: trace genesis (generally `genesis.bin`)\n"
@@ -110,6 +111,8 @@ def main():
     parser.add_argument('-t', '--type', type=str, help=type_help)
     
     args = parser.parse_args()
+    
+    spec.set_spec(args.spec)
     
     # Validate input arguments
     if not args.data and not args.filename:
