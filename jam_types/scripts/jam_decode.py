@@ -26,7 +26,7 @@ def process_hex_string(hex_string):
     return bytes.fromhex(hex_string)
 
 
-def convert_to_json(filename, subsystem_type, spec_name = None, is_hex=False, hex_data=None):
+def convert_to_json(filename, subsystem_type, is_hex=False, hex_data=None):
     if hex_data:
         # Process hex data directly
         blob = process_hex_string(hex_data)
@@ -152,7 +152,7 @@ def main():
             print(f"Error: Unknown type '{args.type}'. Please specify a valid type.", file=sys.stderr)
             sys.exit(1)
    
-    convert_to_json(args.filename, decode_type, is_hex=args.hex, hex_data=args.data)
+    convert_to_json(args.filename, decode_type, args.hex, args.data)
 
 if __name__ == '__main__':
     main()

@@ -4,6 +4,11 @@
 
 from jam_types import TimeSlot, Struct, Header, Block, OpaqueHash, ByteArray, ByteSequence, Vec, String, Enum, Null, Bool, U8, U32, U64, F64
 from jam_types import n
+ 
+# Feature flags for fuzzer capabilities
+FEATURE_ANCESTRY = 1 << 0
+FEATURE_FORKS = 1 << 1
+FEATURES_MASK = FEATURE_ANCESTRY | FEATURE_FORKS
 
 class TrieKey(ByteArray):
     """A 31-byte trie key."""
