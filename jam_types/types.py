@@ -288,6 +288,7 @@ class ReportGuarantee(Struct):
  
 class ServiceInfo(Struct):
     type_mapping = [
+        ('version', n(U8)),
         ('code_hash', 'OpaqueHash'),
         ('balance', 'U64'),
         ('min_item_gas', 'Gas'),
