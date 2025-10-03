@@ -313,6 +313,7 @@ class Privileges(Struct):
         ('bless', n(ServiceId)),
         ('assign', n(CoreAssignmentPrivileges)),
         ('designate', n(ServiceId)),
+        ('register', n(ServiceId)),
         ('always_acc', "Vec<AlwaysAccumulateMapEntry>"),
     ]
 
