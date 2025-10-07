@@ -138,11 +138,7 @@ class ServiceActivityRecord(Struct):
     	# Number of work-items accumulated by service.
     	('accumulate_count', 'Compact<u32>'),
     	# Amount of gas used for accumulation by service.
-    	('accumulate_gas_used', 'Compact<Gas>'),
-    	# Number of transfers processed by service.
-    	('on_transfers_count', 'Compact<u32>'),
-    	# Amount of gas used for processing transfers by service.
-    	('on_transfers_gas_used', 'Compact<Gas>')
+    	('accumulate_gas_used', 'Compact<Gas>')
     ]
 
 class ServicesStatisticsMapEntry(Struct):
@@ -288,6 +284,7 @@ class ReportGuarantee(Struct):
  
 class ServiceInfo(Struct):
     type_mapping = [
+        ('version', n(U8)),
         ('code_hash', 'OpaqueHash'),
         ('balance', 'U64'),
         ('min_item_gas', 'Gas'),
@@ -316,6 +313,7 @@ class Privileges(Struct):
         ('bless', n(ServiceId)),
         ('assign', n(CoreAssignmentPrivileges)),
         ('designate', n(ServiceId)),
+        ('register', n(ServiceId)),
         ('always_acc', "Vec<AlwaysAccumulateMapEntry>"),
     ]
 
