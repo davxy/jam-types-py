@@ -70,8 +70,8 @@ class Profile(Enum):
         1: ("storage", n(Null)),
         2: ("preimages", n(Null)),
         3: ("validators_management", n(Null)),
-        4: ("service_life", n(Null)),
-        5: ("service_life", n(Null)),
+        4: ("storage_and_preimages", n(Null)),
+        254: ("fuzzy", n(Null)),
         255: ("full", n(Null)),
     }
 
