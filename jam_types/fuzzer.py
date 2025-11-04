@@ -75,16 +75,30 @@ class Profile(Enum):
         255: ("full", n(Null)),
     }
 
+class FuzzyProfile(Enum):
+    type_mapping = {
+        0: ("empty", n(Null)),
+        1: ("memcheck", n(Null)),
+        2: ("storage", n(Null)),
+        3: ("preimages", n(Null)),
+        4: ("management", n(Null)),
+        5: ("services", n(Null)),
+        10: ("misc", n(Null)),
+        254: ("rand", n(Null)),
+        255: ("full", n(Null)),
+    }
+
 class ReportConfig(Struct):
     type_mapping = [
         ('seed', n(String)),
-        ('profile', n(Profile)),
+        ('max_steps',  n(U32)),
         ('safrole', n(Bool)),
+        ('profile', n(Profile)),
+        ('fuzzy_profile', n(FuzzyProfile)),
         ('max_work_items', n(U32)),
         ('max_service_keys', n(U32)),
         ('mutation_ratio', n(F64)),
         ('max_mutations', n(U32)),
-        ('max_steps',  n(U32)),
     ]
 
 class RootDiff(Struct):
@@ -120,6 +134,12 @@ class ImportDiff(Struct):
         ('got', n(String)),
     ]
 
+class FuzzerDiff(Enum):
+    type_mapping = {
+        0: ("state", n(StateDiff)),
+        1: ("result", n(ImportDiff)),
+    }
+
 class ReportStatistics(Struct):
     type_mapping = [
 	    ('steps', n(U64)),
@@ -145,9 +165,8 @@ class FuzzerReport(Struct):
     type_mapping = [
         ('config', n(ReportConfig)),
         ('stats', n(ReportStatistics)),
+        ('diff', "Option<FuzzerDiff>"),
         ('target', "Option<TargetReport>"),
-        ('state_diff', "Option<StateDiff>"),
-        ('import_diff', "Option<ImportDiff>")
     ]
 
 class AncestryItem(Struct):
