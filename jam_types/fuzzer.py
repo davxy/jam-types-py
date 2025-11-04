@@ -165,8 +165,8 @@ class FuzzerReport(Struct):
     type_mapping = [
         ('config', n(ReportConfig)),
         ('stats', n(ReportStatistics)),
-        ('diff', "Option<FuzzerDiff>"),
         ('target', "Option<TargetReport>"),
+        ('diff', "Option<FuzzerDiff>"),
     ]
 
 class AncestryItem(Struct):
