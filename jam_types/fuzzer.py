@@ -96,7 +96,6 @@ class ReportConfig(Struct):
         ('profile', n(Profile)),
         ('fuzzy_profile', n(FuzzyProfile)),
         ('max_work_items', n(U32)),
-        ('max_service_keys', n(U32)),
         ('mutation_ratio', n(F64)),
         ('max_mutations', n(U32)),
     ]
