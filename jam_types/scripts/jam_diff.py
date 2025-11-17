@@ -46,8 +46,8 @@ def colorize_diff_line(line):
 def print_colored_diff(json1, json2, label1="Input 1", label2="Input 2", verbose=False):
     """Print a colored diff of two JSON objects."""
     # Pretty print JSON with consistent formatting
-    json1_str = json.dumps(json1, indent=2, sort_keys=True)
-    json2_str = json.dumps(json2, indent=2, sort_keys=True)
+    json1_str = json.dumps(json1, indent=2)
+    json2_str = json.dumps(json2, indent=2)
     
     if verbose:
         # In verbose mode, show full content with inline diff markers
