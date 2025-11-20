@@ -133,10 +133,12 @@ class ImportDiff(Struct):
         ('got', n(String)),
     ]
 
-class FuzzerDiff(Enum):
+class FuzzerError(Enum):
     type_mapping = {
-        0: ("state", n(StateDiff)),
-        1: ("result", n(ImportDiff)),
+        0: ("state_diff", n(StateDiff)),
+        1: ("import_result_diff", n(ImportDiff)),
+        2: ("no_reply", n(Null)),
+        3: ("local_fatal", n(String)),
     }
 
 class ReportStatistics(Struct):
@@ -165,7 +167,7 @@ class FuzzerReport(Struct):
         ('config', n(ReportConfig)),
         ('stats', n(ReportStatistics)),
         ('target', "Option<TargetReport>"),
-        ('diff', "Option<FuzzerDiff>"),
+        ('error', "Option<FuzzerError>"),
     ]
 
 class AncestryItem(Struct):
