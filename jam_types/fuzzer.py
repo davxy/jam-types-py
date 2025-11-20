@@ -137,7 +137,7 @@ class FuzzerError(Enum):
     type_mapping = {
         0: ("state_diff", n(StateDiff)),
         1: ("import_result_diff", n(ImportDiff)),
-        2: ("no_reply", n(Null)),
+        2: ("communication", n(String)),
         3: ("local_fatal", n(String)),
     }
 
