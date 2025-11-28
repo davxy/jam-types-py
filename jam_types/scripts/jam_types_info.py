@@ -65,24 +65,48 @@ def print_type_structure(type_class):
     print(f"Type: {type_class.__name__}")
     print(f"Module: {type_class.__module__}")
     print(f"Base classes: {[base.__name__ for base in type_class.__bases__]}")
-    
+
     # Print docstring if available
     if type_class.__doc__:
-        print(f"Documentation: {type_class.__doc__.strip()}")
-    
+        print(f"\nDocumentation: {type_class.__doc__.strip()}")
+
+    # Print type_mapping for Struct types
+    if hasattr(type_class, 'type_mapping'):
+        type_mapping = type_class.type_mapping
+        if isinstance(type_mapping, list):
+            print("\nFields:")
+            for field_name, field_type in type_mapping:
+                print(f"  {field_name}: {field_type}")
+        elif isinstance(type_mapping, dict):
+            print("\nEnum variants:")
+            for variant_id, (variant_name, variant_type) in type_mapping.items():
+                print(f"  {variant_id}: {variant_name} -> {variant_type}")
+
+    # Print sub_type for Vec/Array types
+    if hasattr(type_class, 'sub_type'):
+        print(f"\nElement type: {type_class.sub_type}")
+
+    # Print element_count for FixedLengthArray
+    if hasattr(type_class, 'element_count'):
+        print(f"Element count: {type_class.element_count}")
+
+    # Print max_elements for BoundedVec
+    if hasattr(type_class, 'max_elements'):
+        print(f"Max elements: {type_class.max_elements}")
+
     # Print class attributes/fields if available
     if hasattr(type_class, '_fields'):
-        print("Fields:")
+        print("\nFields:")
         for field_name, field_type in type_class._fields.items():
             print(f"  {field_name}: {field_type}")
     elif hasattr(type_class, '__annotations__'):
-        print("Annotations:")
+        print("\nAnnotations:")
         for field_name, field_type in type_class.__annotations__.items():
             print(f"  {field_name}: {field_type}")
-    
+
     # Print spec-dependent attributes if available
     if hasattr(type_class, '_spec_attributes'):
-        print("Spec-dependent attributes:")
+        print("\nSpec-dependent attributes:")
         for attr_name, attr_value in type_class._spec_attributes.items():
             print(f"  {attr_name}: {attr_value}")
 
