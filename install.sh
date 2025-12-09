@@ -7,6 +7,8 @@
 
 set -euo pipefail
 
+INSTALLED_PACKAGE_NAME=${INSTALLED_PACKAGE_NAME:-"jam-types"}
+
 PYTHON=python3
 
 # Check if Python is available
@@ -21,7 +23,7 @@ if [ -z "${PIP_LOCAL_VENV:-}" ]; then
     echo "Setting default local venv: $PIP_LOCAL_VENV"
 fi
 
-env_dir="$PIP_LOCAL_VENV/jam-types"
+env_dir="$PIP_LOCAL_VENV/$INSTALLED_PACKAGE_NAME"
 
 echo "Installing jam-types to $env_dir"
 
