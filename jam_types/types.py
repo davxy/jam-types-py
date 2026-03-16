@@ -222,18 +222,15 @@ class Verdict(Struct):
 class TicketId(OpaqueHash):
     pass
 
-class TicketAttempt(U8):
-    pass
-
 class TicketBody(Struct):
     type_mapping = [
         ('id', 'TicketId'),
-        ('attempt', 'TicketAttempt')
+        ('attempt', 'Compact<U8>')
     ]
 
 class TicketEnvelope(Struct):
     type_mapping = [
-        ("attempt", "TicketAttempt"),
+        ("attempt", "Compact<U8>"),
         ("signature", "BandersnatchRingVrfSignature")
     ]
 
