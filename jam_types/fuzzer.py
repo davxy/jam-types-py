@@ -64,6 +64,12 @@ class PeerInfo(Struct):
         ('app_name', n(String)),
     ]
 
+class JamSpec(Enum):
+    type_mapping = {
+        0: ("tiny", n(Null)),
+        1: ("full", n(Null)),
+    }
+
 class Profile(Enum):
     type_mapping = {
         0: ("empty", n(Null)),
@@ -91,6 +97,7 @@ class FuzzyProfile(Enum):
 class ReportConfig(Struct):
     type_mapping = [
         ('seed', n(String)),
+        ('jam_spec', n(JamSpec)),
         ('max_steps',  n(U32)),
         ('safrole', n(Bool)),
         ('profile', n(Profile)),
