@@ -18,6 +18,7 @@ from .spec import (
 )
 from .simple import *
 from .simple import OpaqueHash, TimeSlot, ServiceId, ByteArray, Gas, n
+from .crypto import BandersnatchRingCommitment
 from .work import WorkReport
 
 #
@@ -254,6 +255,18 @@ class TicketsOrKeys(Enum):
         0: ('tickets', n(TicketsBodies)),
         1: ('keys', n(EpochKeys))
     }
+
+#
+# Safole
+# 
+
+class SafroleState(Struct):
+    type_mapping = [
+        ('waiting_validators', n(ValidatorsData)),
+        ('ring_commitment', n(BandersnatchRingCommitment)),
+        ('tickets_or_keys', n(TicketsOrKeys)),
+        ('ticket_accumulator', n(TicketsAccumulator)),
+    ]
 
 #
 # Guarantees
