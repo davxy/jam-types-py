@@ -138,6 +138,8 @@ class ServiceActivityRecord(Struct):
     	('exports', 'Compact<u32>'),
     	# Number of work-items accumulated by service.
     	('accumulate_count', 'Compact<u32>'),
+    	# Number of transfers processed by service during accumulation.
+    	('accumulate_transfer_count', 'Compact<u32>'),
     	# Amount of gas used for accumulation by service.
     	('accumulate_gas_used', 'Compact<Gas>')
     ]
