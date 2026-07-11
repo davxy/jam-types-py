@@ -63,8 +63,11 @@ class ValidatorsData(FixedLengthArray, metaclass=spec_metaclass(type(FixedLength
 
 class AvailabilityAssignment(Struct):
     type_mapping = [
-        ('report', n(WorkReport)),
-        ('timeout', n(TimeSlot))
+        # Full guarantee for the report (report, slot, signatures).
+        ('guarantee', 'ReportGuarantee'),
+        # Slot at which the guarantee was registered on-chain.
+        # Unlike `guarantee.slot`, this is the reference point for the availability timeout.
+        ('registered_slot', n(TimeSlot))
     ]
 
 class AvailabilityAssignments(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
