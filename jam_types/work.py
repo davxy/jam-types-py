@@ -116,6 +116,7 @@ class WorkPackageSpec(Struct):
         ('hash', n(WorkPackageHash)),
         ('length', n(U32)),
         ('erasure_root', 'OpaqueHash'),
+        ('erasure_shards', 'ValidatorIndex'),
         ('exports_root', 'OpaqueHash'),
         ('exports_count', n(U16))
     ]
