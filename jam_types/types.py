@@ -52,10 +52,10 @@ class ValidatorData(Struct):
         ("metadata", 'ValidatorMetadata')
     ]
 
-class ValidatorsData(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+class ValidatorsData(BoundedVec, metaclass=spec_metaclass(type(BoundedVec))):
     sub_type = n(ValidatorData)
-    element_count = validators_count
-    _spec_attributes = {'element_count': 'validators_count'}
+    max_elements = validators_count
+    _spec_attributes = {'max_elements': 'validators_count'}
 
 #
 # Availability Assigments
@@ -89,10 +89,10 @@ class ValidatorActivityRecord(Struct):
         ("assurances", n(U32)),
     ]
 
-class ValidatorsStatistics(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+class ValidatorsStatistics(BoundedVec, metaclass=spec_metaclass(type(BoundedVec))):
     sub_type = n(ValidatorActivityRecord)
-    element_count = validators_count
-    _spec_attributes = {'element_count': 'validators_count'}
+    max_elements = validators_count
+    _spec_attributes = {'max_elements': 'validators_count'}
 
 class CoreActivityRecord(Struct):
     type_mapping = [
