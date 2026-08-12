@@ -209,10 +209,10 @@ class Judgement(Struct):
         ("signature", "Ed25519Signature")
     ]
 
-class Judgements(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+class Judgements(BoundedVec, metaclass=spec_metaclass(type(BoundedVec))):
     sub_type = 'Judgement'
-    element_count = validators_super_majority
-    _spec_attributes = {'element_count': 'validators_super_majority'}
+    max_elements = validators_super_majority
+    _spec_attributes = {'max_elements': 'validators_super_majority'}
     
 class Verdict(Struct):
     type_mapping = [
