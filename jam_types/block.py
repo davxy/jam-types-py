@@ -20,10 +20,10 @@ class EpochMarkValidatorKeys(Struct):
         ('ed25519', n(Ed25519Public))
     ]
 
-class EpochMarkValidatorsKeys(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+class EpochMarkValidatorsKeys(BoundedVec, metaclass=spec_metaclass(type(BoundedVec))):
     sub_type = n(EpochMarkValidatorKeys)
-    element_count = validators_count
-    _spec_attributes = {'element_count': 'validators_count'}
+    max_elements = validators_count
+    _spec_attributes = {'max_elements': 'validators_count'}
 
 class EpochMark(Struct):
     type_mapping = [

@@ -52,10 +52,10 @@ class ValidatorData(Struct):
         ("metadata", 'ValidatorMetadata')
     ]
 
-class ValidatorsData(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+class ValidatorsData(BoundedVec, metaclass=spec_metaclass(type(BoundedVec))):
     sub_type = n(ValidatorData)
-    element_count = validators_count
-    _spec_attributes = {'element_count': 'validators_count'}
+    max_elements = validators_count
+    _spec_attributes = {'max_elements': 'validators_count'}
 
 #
 # Availability Assigments
@@ -63,8 +63,11 @@ class ValidatorsData(FixedLengthArray, metaclass=spec_metaclass(type(FixedLength
 
 class AvailabilityAssignment(Struct):
     type_mapping = [
-        ('report', n(WorkReport)),
-        ('timeout', n(TimeSlot))
+        # Full guarantee for the report (report, slot, signatures).
+        ('guarantee', 'ReportGuarantee'),
+        # Slot at which the guarantee was registered on-chain.
+        # Unlike `guarantee.slot`, this is the reference point for the availability timeout.
+        ('registered_slot', n(TimeSlot))
     ]
 
 class AvailabilityAssignments(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
@@ -86,10 +89,10 @@ class ValidatorActivityRecord(Struct):
         ("assurances", n(U32)),
     ]
 
-class ValidatorsStatistics(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+class ValidatorsStatistics(BoundedVec, metaclass=spec_metaclass(type(BoundedVec))):
     sub_type = n(ValidatorActivityRecord)
-    element_count = validators_count
-    _spec_attributes = {'element_count': 'validators_count'}
+    max_elements = validators_count
+    _spec_attributes = {'max_elements': 'validators_count'}
 
 class CoreActivityRecord(Struct):
     type_mapping = [
@@ -138,6 +141,8 @@ class ServiceActivityRecord(Struct):
     	('exports', 'Compact<u32>'),
     	# Number of work-items accumulated by service.
     	('accumulate_count', 'Compact<u32>'),
+    	# Number of transfers processed by service during accumulation.
+    	('accumulate_transfer_count', 'Compact<u32>'),
     	# Amount of gas used for accumulation by service.
     	('accumulate_gas_used', 'Compact<Gas>')
     ]
@@ -204,10 +209,10 @@ class Judgement(Struct):
         ("signature", "Ed25519Signature")
     ]
 
-class Judgements(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArray))):
+class Judgements(BoundedVec, metaclass=spec_metaclass(type(BoundedVec))):
     sub_type = 'Judgement'
-    element_count = validators_super_majority
-    _spec_attributes = {'element_count': 'validators_super_majority'}
+    max_elements = validators_super_majority
+    _spec_attributes = {'max_elements': 'validators_super_majority'}
     
 class Verdict(Struct):
     type_mapping = [

@@ -89,10 +89,12 @@ class AuthQueues(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengthArra
 class RefineContext(Struct):
     type_mapping = [
         ('anchor', 'HeaderHash'),
+        ('anchor_slot', 'TimeSlot'),
         ('state_root', 'OpaqueHash'),
         ('beefy_root', 'OpaqueHash'),
         ('lookup_anchor', 'HeaderHash'),
         ('lookup_anchor_slot', 'TimeSlot'),
+        ('lookup_anchor_state_root', 'OpaqueHash'),
         ('prerequisites', 'Vec<OpaqueHash>')
     ]
 
@@ -114,6 +116,7 @@ class WorkPackageSpec(Struct):
         ('hash', n(WorkPackageHash)),
         ('length', n(U32)),
         ('erasure_root', 'OpaqueHash'),
+        ('erasure_shards', 'ValidatorIndex'),
         ('exports_root', 'OpaqueHash'),
         ('exports_count', n(U16))
     ]
