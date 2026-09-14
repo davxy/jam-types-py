@@ -67,7 +67,8 @@ class PeerInfo(Struct):
 class JamSpec(Enum):
     type_mapping = {
         0: ("tiny", n(Null)),
-        1: ("full", n(Null)),
+        1: ("large", n(Null)),
+        2: ("full", n(Null)),
     }
 
 class Profile(Enum):
@@ -77,6 +78,9 @@ class Profile(Enum):
         2: ("preimages", n(Null)),
         3: ("validators_management", n(Null)),
         4: ("storage_and_preimages", n(Null)),
+        5: ("preimages_l0", n(Null)),
+        6: ("misc", n(Null)),
+        7: ("management", n(Null)),
         254: ("fuzzy", n(Null)),
         255: ("full", n(Null)),
     }
@@ -100,6 +104,7 @@ class ReportConfig(Struct):
         ('jam_spec', n(JamSpec)),
         ('max_steps',  n(U32)),
         ('safrole', n(Bool)),
+        ('disputes', n(Bool)),
         ('profile', n(Profile)),
         ('fuzzy_profile', n(FuzzyProfile)),
         ('max_work_items', n(U32)),
