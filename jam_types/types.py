@@ -231,12 +231,12 @@ class TicketId(OpaqueHash):
 class TicketBody(Struct):
     type_mapping = [
         ('id', 'TicketId'),
-        ('attempt', 'Compact<U8>')
+        ('attempt', 'U8')
     ]
 
 class TicketEnvelope(Struct):
     type_mapping = [
-        ("attempt", "Compact<U8>"),
+        ("attempt", "U8"),
         ("signature", "BandersnatchRingVrfSignature")
     ]
 
