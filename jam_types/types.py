@@ -124,9 +124,9 @@ class CoresStatistics(FixedLengthArray, metaclass=spec_metaclass(type(FixedLengt
 class ServiceActivityRecord(Struct):
     type_mapping = [
     	# Number of preimages provided to this service.
-    	('provided_count', 'Compact<u16>'),
+    	('provided_count', 'Compact<u32>'),
     	# Total size of preimages provided to this service.
-    	('provided_size', 'Compact<u32>'),
+    	('provided_size', 'Compact<u64>'),
     	# Number of work-items refined by service for reported work.
     	('refinement_count', 'Compact<u32>'),
     	# Amount of gas used for refinement by service for reported work.
@@ -136,7 +136,7 @@ class ServiceActivityRecord(Struct):
     	# Total number of extrinsics used by service for reported work.
     	('extrinsic_count', 'Compact<u32>'),
     	# Total size of extrinsics used by service for reported work.
-    	('extrinsic_size', 'Compact<u32>'),
+    	('extrinsic_size', 'Compact<u64>'),
     	# Number of segments exported into the DL by service for reported work.
     	('exports', 'Compact<u32>'),
     	# Number of work-items accumulated by service.
