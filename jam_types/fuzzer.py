@@ -2,7 +2,7 @@
 #============ Fuzzer Protocol =============
 #==========================================
 
-from jam_types import TimeSlot, Struct, Header, Block, OpaqueHash, ByteArray, ByteSequence, Vec, String, Enum, Null, Bool, U8, U32, U64, F64
+from jam_types import TimeSlot, Struct, Header, Block, OpaqueHash, ByteArray, ByteSequence, Vec, String, Enum, Bool, U8, U32, U64, F64
 from jam_types import n
  
 # Feature flags for fuzzer capabilities
@@ -65,44 +65,44 @@ class PeerInfo(Struct):
     ]
 
 class JamSpec(Enum):
-    type_mapping = {
-        0: ("tiny", n(Null)),
-        1: ("large", n(Null)),
-        2: ("full", n(Null)),
+    value_list = {
+        0: "tiny",
+        1: "large",
+        2: "full",
     }
 
 class Profile(Enum):
-    type_mapping = {
-        0: ("empty", n(Null)),
-        1: ("storage", n(Null)),
-        2: ("preimages", n(Null)),
-        3: ("validators_management", n(Null)),
-        4: ("storage_and_preimages", n(Null)),
-        5: ("preimages_l0", n(Null)),
-        6: ("misc", n(Null)),
-        7: ("management", n(Null)),
-        254: ("fuzzy", n(Null)),
-        255: ("full", n(Null)),
+    value_list = {
+        0: "empty",
+        1: "storage",
+        2: "preimages",
+        3: "validators_management",
+        4: "storage_and_preimages",
+        5: "preimages_l0",
+        6: "misc",
+        7: "management",
+        254: "fuzzy",
+        255: "full",
     }
 
 class FuzzyProfile(Enum):
-    type_mapping = {
-        0: ("empty", n(Null)),
-        1: ("memcheck", n(Null)),
-        2: ("storage", n(Null)),
-        3: ("preimages", n(Null)),
-        4: ("management", n(Null)),
-        5: ("services", n(Null)),
-        10: ("misc", n(Null)),
-        254: ("rand", n(Null)),
-        255: ("full", n(Null)),
+    value_list = {
+        0: "empty",
+        1: "memcheck",
+        2: "storage",
+        3: "preimages",
+        4: "management",
+        5: "services",
+        10: "misc",
+        254: "rand",
+        255: "full",
     }
 
 class SourceKind(Enum):
-    type_mapping = {
-        0: ("local", n(Null)),
-        1: ("trace", n(Null)),
-        2: ("remote", n(Null)),
+    value_list = {
+        0: "local",
+        1: "trace",
+        2: "remote",
     }
 
 class ReportConfig(Struct):
