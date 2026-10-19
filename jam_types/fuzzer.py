@@ -98,6 +98,13 @@ class FuzzyProfile(Enum):
         255: ("full", n(Null)),
     }
 
+class SourceKind(Enum):
+    type_mapping = {
+        0: ("local", n(Null)),
+        1: ("trace", n(Null)),
+        2: ("remote", n(Null)),
+    }
+
 class ReportConfig(Struct):
     type_mapping = [
         ('seed', n(String)),
@@ -110,6 +117,9 @@ class ReportConfig(Struct):
         ('max_work_items', n(U32)),
         ('mutation_ratio', n(F64)),
         ('max_mutations', n(U32)),
+        ('source', n(SourceKind)),
+        ('skip_slots', n(Bool)),
+        ('version', n(String)),
     ]
 
 class RootDiff(Struct):
@@ -180,6 +190,7 @@ class FuzzerReport(Struct):
         ('stats', n(ReportStatistics)),
         ('target', "Option<TargetReport>"),
         ('error', "Option<FuzzerError>"),
+        ('mutant_of', "Option<OpaqueHash>"),
     ]
 
 class AncestryItem(Struct):
