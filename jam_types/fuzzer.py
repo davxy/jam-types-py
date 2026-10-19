@@ -184,6 +184,9 @@ class TargetReport(Struct):
         ('stats', n(ReportStatistics))
     ]
 
+class Mutations(Vec):
+    sub_type = n(String)
+
 class FuzzerReport(Struct):
     type_mapping = [
         ('config', n(ReportConfig)),
@@ -191,6 +194,7 @@ class FuzzerReport(Struct):
         ('target', "Option<TargetReport>"),
         ('error', "Option<FuzzerError>"),
         ('mutant_of', "Option<OpaqueHash>"),
+        ('mutations', n(Mutations)),
     ]
 
 class AncestryItem(Struct):
